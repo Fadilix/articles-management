@@ -1,7 +1,6 @@
 package views;
 
 import javax.swing.*;
-// import java.awt.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -11,45 +10,44 @@ import database.DatabaseConnection;
 
 public class ListeCategories extends JFrame {
 
-    private JTable articlesTable;
+    private JTable tableCategories;
 
-    public ListeCategories(Connection connection) {
-        // Set up the frame
-        this.setTitle("Liste des Categories d'article");
+    public ListeCategories(Connection connexion) {
+        // Configuration de la fenêtre
+        this.setTitle("Liste des Catégories d'articles");
         this.setSize(800, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Create a table model and set column names
-        DefaultTableModel tableModel = new DefaultTableModel();
-        tableModel.addColumn("Categories");
+        // Création d'un modèle de tableau et définir les noms de colonnes
+        DefaultTableModel modeleTableau = new DefaultTableModel();
+        modeleTableau.addColumn("Catégories");
 
-        // Fetch data from the database and add it to the table model
+        // Récupération des données depuis la base de données et ajout au modèle de tableau
         try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement
-                    .executeQuery("SELECT DISTINCT designationCat FROM article");
+            Statement statement = connexion.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT DISTINCT designationCat FROM article");
 
             while (resultSet.next()) {
-                Object[] rowData = {
+                Object[] ligneDonnees = {
                         resultSet.getString("designationCat"),
                 };
-                tableModel.addRow(rowData);
+                modeleTableau.addRow(ligneDonnees);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        // Create the JTable with the populated table model
-        articlesTable = new JTable(tableModel);
+        // Création du JTable avec le modèle de tableau rempli
+        tableCategories = new JTable(modeleTableau);
 
-        // Add the table to a JScrollPane to enable scrolling
-        JScrollPane scrollPane = new JScrollPane(articlesTable);
+        // Ajout du tableau à un JScrollPane pour permettre le défilement
+        JScrollPane scrollPane = new JScrollPane(tableCategories);
 
-        // Add the scroll pane to the frame
+        // Ajout du JScrollPane à la fenêtre
         this.add(scrollPane);
 
-        // Set frame properties
+        // Définition des propriétés de la fenêtre
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
