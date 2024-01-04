@@ -18,7 +18,7 @@ public class ListeCategories extends JFrame {
         this.setSize(800, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Création d'un modèle de tableau et définir les noms de colonnes
+        // Création d'un modèle de tableau et défnition des noms de colonnes
         DefaultTableModel modeleTableau = new DefaultTableModel();
         modeleTableau.addColumn("Catégories");
 
