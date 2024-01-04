@@ -1,4 +1,4 @@
 public class Categorie {
-    int idCat;
-    String designation;
+    private int idCat;
+    private String designation;
 }
