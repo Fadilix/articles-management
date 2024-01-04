@@ -1,6 +1,8 @@
 package views;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -8,9 +10,11 @@ import javax.swing.table.DefaultTableModel;
 
 import database.DatabaseConnection;
 
-public class ListeArticles extends JFrame {
+public class ListeArticles extends JFrame implements ActionListener {
 
     private JTable tableArticles;
+    private JButton modifierButton;
+    private JButton supprimerButton;
 
     public ListeArticles(Connection connexion) {
         // Paramètres de l'écran
@@ -54,7 +58,21 @@ public class ListeArticles extends JFrame {
         // Ajout du tableau à un JScrollPane pour permettre le défilement
         JScrollPane scrollPane = new JScrollPane(tableArticles);
 
-        // Ajout du JScrollPane à la fenêtre
+        // Ajout des boutons Modifier et Supprimer
+        modifierButton = new JButton("Modifier");
+        supprimerButton = new JButton("Supprimer");
+
+        // Ajout des écouteurs d'événements pour les boutons
+        modifierButton.addActionListener(this);
+
+        supprimerButton.addActionListener(this);
+
+        // Ajout des composants à la fenêtre
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(modifierButton);
+        buttonPanel.add(supprimerButton);
+
+        this.add(buttonPanel, "South");
         this.add(scrollPane);
 
         // Définition des propriétés de la fenêtre
@@ -67,5 +85,23 @@ public class ListeArticles extends JFrame {
         DatabaseConnection databaseConnection = new DatabaseConnection();
         Connection existingConnection = databaseConnection.getConnection();
         new ListeArticles(existingConnection);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == modifierButton) {
+            int selectedRow = tableArticles.getSelectedRow();
+
+            int idArticle = (int) tableArticles.getValueAt(selectedRow, 0);
+            this.setVisible(false);
+            DatabaseConnection databaseConnection = new DatabaseConnection();
+            Connection existingConnection = databaseConnection.getConnection();
+            new ModifierArticle(idArticle, existingConnection);
+        }
+
+        if (e.getSource() == supprimerButton) {
+
+        }
+
     }
 }
