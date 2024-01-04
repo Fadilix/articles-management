@@ -19,15 +19,10 @@ public class DatabaseConnection {
 
             ResultSet resultSet = statement.executeQuery("SELECT * FROM article");
 
-            String query = "INSERT INTO article values ()";
+            // String query = "INSERT INTO article values ()";
 
             while (resultSet.next()) {
                 System.out.println(resultSet.getInt("idArticle"));
-                // System.out.println(resultSet.getString("libel"));
-                // System.out.println(resultSet.getDouble("prix"));
-                // System.out.println(resultSet.getInt("quantiteEnStock"));
-                // System.out.println(resultSet.getDate("dateDeCrea"));
-                // System.out.println(resultSet.getInt("idCat"));
             }
 
             connection.close();
