@@ -15,7 +15,7 @@ import java.sql.SQLException;
 public class EnregistrementArticle extends JFrame {
 
     private JButton boutonValider;
-    private JTextField libel, prix, quantiteStock, dateCreation, quantiteSeuil;
+    private JTextField libel, prix, quantiteStock, quantiteSeuil;
     private JTextField designationCat;
 
     private final Connection connection;
@@ -26,7 +26,6 @@ public class EnregistrementArticle extends JFrame {
         libel = new JTextField(20);
         prix = new JTextField(20);
         quantiteStock = new JTextField(20);
-        dateCreation = new JTextField(20);
         quantiteSeuil = new JTextField(20);
         designationCat = new JTextField(20);
         boutonValider = new JButton("Valider");
@@ -57,12 +56,6 @@ public class EnregistrementArticle extends JFrame {
 
         gbc.gridx = 0;
         gbc.gridy++;
-        panel.add(new JLabel("Date de création :"), gbc);
-        gbc.gridx++;
-        panel.add(dateCreation, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy++;
         panel.add(new JLabel("Quantité seuil :"), gbc);
         gbc.gridx++;
         panel.add(quantiteSeuil, gbc);
@@ -89,6 +82,7 @@ public class EnregistrementArticle extends JFrame {
     private void insertIntoDatabase() {
         try {
             // Utilisation de la base de données existente
+            // Enregistrement de l'article
             String sql = "INSERT INTO article (libel, prix, quantiteEnStock, dateDeCrea, quantiteSeuil,  designationCat) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
@@ -102,17 +96,25 @@ public class EnregistrementArticle extends JFrame {
 
             int rowsInserted = preparedStatement.executeUpdate();
 
-            if (rowsInserted > 0) {
+            // Enregistrement de la catégorie
+            String categorieSql = "INSERT INTO categorie (designation) VALUES (?)";
+            PreparedStatement prepCatStatement = connection.prepareStatement(categorieSql);
+            prepCatStatement.setString(1, designationCat.getText());
+
+            int catRows = prepCatStatement.executeUpdate();
+
+            if (rowsInserted > 0 & catRows > 0) {
                 System.out.println("L'enregistrement a été inséré avec succès !");
             } else {
                 System.out.println("Erreur lors de l'insertion de l'enregistrement.");
             }
 
             preparedStatement.close();
+            this.setVisible(false);
+            new PageSucces();
 
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }
-
 }
