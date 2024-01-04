@@ -142,6 +142,8 @@ public class ModifierArticle extends JFrame implements ActionListener {
                 ex.printStackTrace();
             }
         }
+
+
     }
 
     public static void main(String[] args) {
