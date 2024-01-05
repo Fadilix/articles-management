@@ -3,6 +3,7 @@ package views;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
+import components.TopNavBar;
 import database.DatabaseConnection;
 
 import java.awt.*;
@@ -19,6 +20,8 @@ public class EnregistrementArticle extends JFrame {
 
     public EnregistrementArticle(Connection connection) {
         this.connection = connection;
+        TopNavBar topNavBar = new TopNavBar(connection);
+        this.setJMenuBar(topNavBar);
 
         libel = new JTextField(30); // Increased input size
         prix = new JTextField(30);

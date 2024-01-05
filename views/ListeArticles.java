@@ -2,6 +2,9 @@ package views;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import components.TopNavBar;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,6 +36,9 @@ public class ListeArticles extends JFrame implements ActionListener {
         this.setTitle("Liste des Articles en Stock");
         this.setSize(800, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+           //navbar 
+        TopNavBar topNavBar = new TopNavBar(existingConnection);
+        this.setJMenuBar(topNavBar);
 
         // Création d'un modèle de tableau et définir les noms de colonnes
         DefaultTableModel modeleTableau = new DefaultTableModel();
