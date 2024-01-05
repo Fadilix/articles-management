@@ -23,9 +23,9 @@ public class Login extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Styling
-        Font labelFont = new Font("Arial", Font.PLAIN, 18);
-        Font inputFont = new Font("Arial", Font.PLAIN, 16);
-        UIManager.put("OptionPane.messageFont", new Font("Arial", Font.PLAIN, 16));
+        Font labelFont = new Font("Arial", Font.PLAIN, 24);
+        Font inputFont = new Font("Arial", Font.PLAIN, 20);
+        UIManager.put("OptionPane.messageFont", new Font("Arial", Font.PLAIN, 20));
 
         usernameField = new JTextField(20);
         usernameField.setFont(inputFont);
@@ -84,8 +84,7 @@ public class Login extends JFrame implements ActionListener {
         String password = new String(passwordChars);
 
         if (username.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Username and password are required.", "Error",
-                    JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Username and password are required.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -98,13 +97,11 @@ public class Login extends JFrame implements ActionListener {
                 ResultSet resultSet = preparedStatement.executeQuery();
 
                 if (resultSet.next()) {
-                    JOptionPane.showMessageDialog(this, "Login successful.", "Welcome",
-                            JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Login successful.", "Welcome", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
                     new WelcomePage(username);
                 } else {
-                    JOptionPane.showMessageDialog(this, "Invalid username or password.", "Error",
-                            JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Invalid username or password.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
 

@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -11,41 +12,39 @@ import javax.swing.JLabel;
 import database.DatabaseConnection;
 
 public class PageSucces extends JFrame implements ActionListener {
-    JLabel msg;
-    JButton button;
+    private JLabel successMessage;
+    private JButton viewArticlesButton;
 
     public PageSucces() {
-        button = new JButton("liste des articles");
-        button.setBounds(100, 150, 100, 100);
-        button.addActionListener(this);
-        msg = new JLabel("L'article a été enregistré avec succès");
+        successMessage = new JLabel("L'article a été enregistré avec succès");
+        successMessage.setBounds(100, 50, 300, 50);
+        successMessage.setHorizontalAlignment(JLabel.CENTER);
 
-        // Centrer le message
-        // msg.setHorizontalAlignment(JLabel.CENTER);
-        // msg.setVerticalAlignment(JLabel.CENTER);
-        msg.setBounds(100, 100, 100, 50);
+        Font messageFont = new Font("Arial", Font.PLAIN, 18);
+        successMessage.setFont(messageFont);
 
-        // Creation du font
-        Font font = new Font("Arial", Font.PLAIN, 16);
-        msg.setFont(font);
+        viewArticlesButton = new JButton("Voir la liste des articles");
+        viewArticlesButton.setBounds(150, 120, 200, 40);
+        viewArticlesButton.addActionListener(this);
 
-        // paramètres de l'écran
-        this.add(msg);
-        this.add(button);
+        // Set up frame
+        this.add(successMessage);
+        this.add(viewArticlesButton);
         this.setLayout(null);
-        this.setSize(500, 500);
+        this.setSize(500, 200);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == button) {
-
-            // Redirection vers la pages de liste des articles
+        if (e.getSource() == viewArticlesButton) {
+            // Redirect to the article list page
             DatabaseConnection databaseConnection = new DatabaseConnection();
             Connection existingConnection = databaseConnection.getConnection();
-
             new ListeArticles(existingConnection);
+            this.dispose(); // Close the current success page
         }
     }
 

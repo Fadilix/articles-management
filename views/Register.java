@@ -17,30 +17,57 @@ public class Register extends JFrame implements ActionListener {
     private JButton registerButton;
 
     public Register() {
-        this.setTitle("User Registration");
-        this.setSize(300, 200);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("User Registration");
+        setSize(800, 600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Styling
+        Font labelFont = new Font("Arial", Font.PLAIN, 24);
+        Font inputFont = new Font("Arial", Font.PLAIN, 20);
+        UIManager.put("OptionPane.messageFont", new Font("Arial", Font.PLAIN, 20));
 
         usernameField = new JTextField(20);
+        usernameField.setFont(inputFont);
         passwordField = new JPasswordField(20);
+        passwordField.setFont(inputFont);
         registerButton = new JButton("Register");
+        registerButton.setFont(inputFont);
 
         registerButton.addActionListener(this);
 
         JPanel formPanel = new JPanel();
-        formPanel.setLayout(new GridLayout(3, 2));
-        formPanel.add(new JLabel("Username:"));
-        formPanel.add(usernameField);
-        formPanel.add(new JLabel("Password:"));
-        formPanel.add(passwordField);
-        formPanel.add(new JLabel(""));
-        formPanel.add(registerButton);
+        formPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
 
-        this.add(formPanel);
+        JLabel usernameLabel = new JLabel("Username:");
+        usernameLabel.setFont(labelFont);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        formPanel.add(usernameLabel, gbc);
 
-        this.pack();
-        this.setLocationRelativeTo(null);
-        this.setVisible(true);
+        gbc.gridx = 1;
+        formPanel.add(usernameField, gbc);
+
+        JLabel passwordLabel = new JLabel("Password:");
+        passwordLabel.setFont(labelFont);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        formPanel.add(passwordLabel, gbc);
+
+        gbc.gridx = 1;
+        formPanel.add(passwordField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        formPanel.add(registerButton, gbc);
+
+        add(formPanel);
+
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
 
     @Override
@@ -60,7 +87,6 @@ public class Register extends JFrame implements ActionListener {
             return;
         }
 
-        // insertion des données dans la base
         try (Connection connection = new DatabaseConnection().getConnection()) {
             String insertQuery = "INSERT INTO user (username, password) VALUES (?, ?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
@@ -71,6 +97,7 @@ public class Register extends JFrame implements ActionListener {
 
                 if (rowsAffected > 0) {
                     JOptionPane.showMessageDialog(this, "User registered successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    dispose(); // Close the registration window after successful registration
                 } else {
                     JOptionPane.showMessageDialog(this, "Failed to register user.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -82,6 +109,6 @@ public class Register extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new Register();
+        SwingUtilities.invokeLater(() -> new Register());
     }
 }

@@ -9,7 +9,4 @@ public class Article {
     private int quantiteSeuil;
     private Categorie categorie;
 
-    public boolean approvisionnementNecessaire() {
-        return this.quantiteEnStock < this.quantiteSeuil;
-    }
 }
