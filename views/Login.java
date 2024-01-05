@@ -102,7 +102,7 @@ public class Login extends JFrame implements ActionListener {
                             JOptionPane.INFORMATION_MESSAGE);
                     dispose();
 
-                    new WelcomePage(username, connection);
+                    new WelcomePage(username);
                 } else {
                     JOptionPane.showMessageDialog(this, "Invalid username or password.", "Error",
                             JOptionPane.ERROR_MESSAGE);

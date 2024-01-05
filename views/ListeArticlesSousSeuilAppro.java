@@ -15,11 +15,13 @@ public class ListeArticlesSousSeuilAppro extends JFrame {
 
     private JTable tableArticlesSousSeuil;
 
-    public ListeArticlesSousSeuilAppro(Connection connection) {
+    public ListeArticlesSousSeuilAppro() {
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        Connection connection = databaseConnection.getConnection();
         this.setTitle("Liste des Articles sous le seuil d'approvisionnement");
         this.setSize(800, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-           TopNavBar topNavBar = new TopNavBar(connection);
+           TopNavBar topNavBar = new TopNavBar(this);
         this.setJMenuBar(topNavBar);
 
         // Création d'un modèle de tableau et définir les noms de colonnes
@@ -66,8 +68,6 @@ public class ListeArticlesSousSeuilAppro extends JFrame {
     }
 
     public static void main(String[] args) {
-        DatabaseConnection databaseConnection = new DatabaseConnection();
-        Connection existingConnection = databaseConnection.getConnection();
-        new ListeArticlesSousSeuilAppro(existingConnection);
+        new ListeArticlesSousSeuilAppro();
     }
 }

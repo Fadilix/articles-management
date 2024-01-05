@@ -24,11 +24,9 @@ public class VendreArticle extends JFrame implements ActionListener {
     private JTextField fournisseurField;
     private JButton vendreButton;
     private int idArticle;
-    private Connection connection;
 
-    public VendreArticle(int idArticle, Connection connection) {
+    public VendreArticle(int idArticle) {
         this.idArticle = idArticle;
-        this.connection = connection;
 
         this.setTitle("Vendre Article");
         this.setSize(400, 200);
@@ -74,6 +72,9 @@ public class VendreArticle extends JFrame implements ActionListener {
             String fournisseur = fournisseurField.getText();
             double prixUnitaire = getPrixUnitaire(idArticle);
             double prixTotal = quantiteVendue * prixUnitaire;
+
+            DatabaseConnection databaseConnection = new DatabaseConnection();
+            Connection connection = databaseConnection.getConnection();
 
             // Insertion des données dans la table ArticleVendu
             String insertQuery = "INSERT INTO ArticleVendu (libel, prix, dateDeVente, designationCat, quantiteVendu, prixTotal, fournisseur) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -168,6 +169,8 @@ public class VendreArticle extends JFrame implements ActionListener {
     private String getLibelle(int idArticle) throws SQLException {
         String libelle = null;
         String sql = "SELECT libel FROM Article WHERE idArticle = ?";
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        Connection connection = databaseConnection.getConnection();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, idArticle);
@@ -184,6 +187,8 @@ public class VendreArticle extends JFrame implements ActionListener {
 
     private double getPrixUnitaire(int idArticle) throws SQLException {
         String sql = "SELECT prix FROM Article WHERE idArticle = ?";
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        Connection connection = databaseConnection.getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, idArticle);
 
@@ -199,6 +204,8 @@ public class VendreArticle extends JFrame implements ActionListener {
 
     private String getDesignationCategorie(int idArticle) throws SQLException {
         String sql = "SELECT designationCat FROM Article WHERE idArticle = ?";
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        Connection connection = databaseConnection.getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, idArticle);
 
@@ -219,8 +226,6 @@ public class VendreArticle extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        DatabaseConnection connection = new DatabaseConnection();
-        Connection existingConnection = connection.getConnection();
-        new VendreArticle(1, existingConnection);
+        new VendreArticle(1);
     }
 }

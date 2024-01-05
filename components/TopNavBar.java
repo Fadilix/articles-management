@@ -10,11 +10,17 @@ import views.ListeArticlesVendus;
 import views.ListeCategories;
 
 import java.awt.Color;
-import java.sql.Connection;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class TopNavBar extends JMenuBar {
 
-    public TopNavBar(Connection connection) {
+    private JFrame parentFrame;
+
+    public TopNavBar(JFrame parentFrame) {
+
+        this.parentFrame = parentFrame;
+
         // Menu "Articles"
         JMenu menuArticles = new JMenu("Articles");
         menuArticles.setForeground(Color.WHITE);
@@ -23,10 +29,37 @@ public class TopNavBar extends JMenuBar {
         JMenuItem categorieArticlesItem = new JMenuItem("Catégories d'articles");
         JMenuItem seuilApproItem = new JMenuItem("Articles sous seuil d'approvisionnement");
 
-        enregistrementItem.addActionListener(e -> new EnregistrementArticle(connection));
-        listeArticlesItem.addActionListener(e -> new ListeArticles());
-        categorieArticlesItem.addActionListener(e -> new ListeCategories(connection));
-        seuilApproItem.addActionListener(e -> new ListeArticlesSousSeuilAppro(connection));
+        enregistrementItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new EnregistrementArticle();
+                parentFrame.dispose();
+            }
+        });
+
+        listeArticlesItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ListeArticles();
+                parentFrame.dispose();
+            }
+        });
+
+        categorieArticlesItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ListeCategories();
+                parentFrame.dispose();
+            }
+        });
+
+        seuilApproItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ListeArticlesSousSeuilAppro();
+                parentFrame.dispose();
+            }
+        });
 
         menuArticles.add(enregistrementItem);
         menuArticles.add(listeArticlesItem);
@@ -40,8 +73,21 @@ public class TopNavBar extends JMenuBar {
         JMenuItem vendreItem = new JMenuItem("Vendre un article");
         JMenuItem listeVendusItem = new JMenuItem("Liste des articles vendus");
 
-        vendreItem.addActionListener(e -> new ListeArticles());
-        listeVendusItem.addActionListener(e -> new ListeArticlesVendus(connection));
+        vendreItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ListeArticles();
+                parentFrame.dispose();
+            }
+        });
+
+        listeVendusItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ListeArticlesVendus();
+                parentFrame.dispose();
+            }
+        });
 
         menuVente.add(vendreItem);
         menuVente.add(listeVendusItem);
@@ -51,7 +97,13 @@ public class TopNavBar extends JMenuBar {
         menuApprovisionnement.setForeground(Color.WHITE);
         JMenuItem listeApproItem = new JMenuItem("Liste des approvisionnements");
 
-        listeApproItem.addActionListener(e -> new ListeApprovisionnements(connection));
+        listeApproItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ListeApprovisionnements();
+                parentFrame.dispose();
+            }
+        });
 
         menuApprovisionnement.add(listeApproItem);
 
@@ -62,14 +114,16 @@ public class TopNavBar extends JMenuBar {
 
         // the background
         this.setBackground(new Color(47, 38, 38)); // #2F2626
-
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            DatabaseConnection databaseConnection = new DatabaseConnection();
-            Connection existingConnection = databaseConnection.getConnection();
-            new TopNavBar(existingConnection);
+            JFrame frame = new JFrame("Your Application Name");
+            new TopNavBar(frame);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(800, 600);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
         });
     }
 }

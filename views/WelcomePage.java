@@ -11,10 +11,10 @@ public class WelcomePage extends JFrame {
     private String username;
     private JLabel welcomeLabel;
 
-    public WelcomePage(String username, Connection connection) {
+    public WelcomePage(String username) {
         this.username = username;
 
-        TopNavBar topNavBar = new TopNavBar(connection);
+        TopNavBar topNavBar = new TopNavBar(this);
         this.setJMenuBar(topNavBar);
 
         this.setTitle("Welcome");
@@ -23,7 +23,7 @@ public class WelcomePage extends JFrame {
 
         // Creating components
         welcomeLabel = new JLabel("Welcome, " + username + "!");
-        
+
         // Increase the font size for the welcome message
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 30));
 
@@ -40,9 +40,7 @@ public class WelcomePage extends JFrame {
     }
 
     public static void main(String[] args) {
-        DatabaseConnection databaseConnection = new DatabaseConnection();
-        Connection connection = databaseConnection.getConnection();
 
-        new WelcomePage("JohnDoe", connection);
+        new WelcomePage("JohnDoe");
     }
 }

@@ -17,13 +17,15 @@ public class ListeCategories extends JFrame {
 
     private JTable tableCategories;
 
-    public ListeCategories(Connection connection) {
+    public ListeCategories() {
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        Connection connection = databaseConnection.getConnection();
         // Configuration de la fenêtre
         this.setTitle("Liste des Catégories d'articles");
         this.setSize(800, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-           TopNavBar topNavBar = new TopNavBar(connection);
+           TopNavBar topNavBar = new TopNavBar(this);
         this.setJMenuBar(topNavBar);
 
         // Création d'un modèle de tableau et définition des noms de colonnes
@@ -64,8 +66,7 @@ public class ListeCategories extends JFrame {
     }
 
     public static void main(String[] args) {
-        DatabaseConnection databaseConnection = new DatabaseConnection();
-        Connection existingConnection = databaseConnection.getConnection();
-        new ListeCategories(existingConnection);
+  
+        new ListeCategories();
     }
 }

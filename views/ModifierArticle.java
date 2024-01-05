@@ -25,13 +25,12 @@ public class ModifierArticle extends JFrame implements ActionListener {
     private JButton boutonValider;
     private JTextField libel, prix, quantiteStock, quantiteSeuil, designationCat;
 
-    private final Connection connection;
     private final int idArticle;
 
-    public ModifierArticle(int idArticle, Connection connection) {
+    public ModifierArticle(int idArticle) {
         this.idArticle = idArticle;
-        this.connection = connection;
-        TopNavBar topNavBar = new TopNavBar(connection);
+
+        TopNavBar topNavBar = new TopNavBar(this);
         this.setJMenuBar(topNavBar);
 
         label = new JLabel("Modification de l'article avec ID : " + idArticle);
@@ -101,6 +100,9 @@ public class ModifierArticle extends JFrame implements ActionListener {
 
     private void remplirChamps() {
         try {
+            DatabaseConnection databaseConnection = new DatabaseConnection();
+            Connection connection = databaseConnection.getConnection();
+
             String query = "SELECT libel, prix, quantiteEnStock, quantiteSeuil, designationCat FROM article WHERE idArticle = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, idArticle);
@@ -123,6 +125,8 @@ public class ModifierArticle extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == boutonValider) {
             try {
+                DatabaseConnection databaseConnection = new DatabaseConnection();
+                Connection connection = databaseConnection.getConnection();
                 String sql = "UPDATE article SET libel = ?, prix = ?, quantiteEnStock = ?, quantiteSeuil = ?, designationCat = ? WHERE idArticle = ?";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
@@ -150,8 +154,6 @@ public class ModifierArticle extends JFrame implements ActionListener {
 
     public static void main(String[] args) {
         // Exemple d'utilisation
-        DatabaseConnection databaseConnection = new DatabaseConnection();
-        Connection existingConnection = databaseConnection.getConnection();
-        new ModifierArticle(1, existingConnection);
+        new ModifierArticle(1);
     }
 }

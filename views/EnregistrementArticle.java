@@ -18,9 +18,11 @@ public class EnregistrementArticle extends JFrame {
 
     private final Connection connection;
 
-    public EnregistrementArticle(Connection connection) {
+    public EnregistrementArticle() {
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        Connection connection = databaseConnection.getConnection();
         this.connection = connection;
-        TopNavBar topNavBar = new TopNavBar( connection);
+        TopNavBar topNavBar = new TopNavBar(this);
         this.setJMenuBar(topNavBar);
 
         libel = new JTextField(30); // Increased input size
@@ -159,9 +161,7 @@ public class EnregistrementArticle extends JFrame {
             prepCatStatement.close();
             this.setVisible(false);
 
-            DatabaseConnection databaseConnection = new DatabaseConnection();
-            Connection connection = databaseConnection.getConnection();
-            new PageSucces(connection);
+            new PageSucces();
 
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -169,8 +169,6 @@ public class EnregistrementArticle extends JFrame {
     }
 
     public static void main(String[] args) {
-        DatabaseConnection databaseConnection = new DatabaseConnection();
-        Connection existingConnection = databaseConnection.getConnection();
-        SwingUtilities.invokeLater(() -> new EnregistrementArticle(existingConnection));
+        SwingUtilities.invokeLater(() -> new EnregistrementArticle());
     }
 }

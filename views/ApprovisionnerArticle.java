@@ -3,7 +3,6 @@ package views;
 import javax.swing.*;
 
 import components.TopNavBar;
-import database.DatabaseConnection;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -22,16 +21,15 @@ public class ApprovisionnerArticle extends JFrame implements ActionListener {
     private JTextField quantiteField;
     private JButton approvisionnerButton;
 
-    public ApprovisionnerArticle(int idArticle, Connection existingConnection) {
+    public ApprovisionnerArticle(int idArticle) {
         this.idArticle = idArticle;
-        this.existingConnection = existingConnection;
 
         // Paramètres de l'écran
         this.setTitle("Approvisionner Article");
         this.setSize(400, 200);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
-        TopNavBar topNavBar = new TopNavBar(existingConnection);
+        TopNavBar topNavBar = new TopNavBar(this);
         this.setJMenuBar(topNavBar);
 
 
@@ -102,8 +100,6 @@ public class ApprovisionnerArticle extends JFrame implements ActionListener {
 
                 JOptionPane.showMessageDialog(this, "Article approvisionné avec succès.");
                 this.dispose();
-                DatabaseConnection databaseConnection = new DatabaseConnection();
-                Connection existingConnection = databaseConnection.getConnection();
                 new ListeArticles();
 
             } catch (NumberFormatException | SQLException ex) {
@@ -115,8 +111,6 @@ public class ApprovisionnerArticle extends JFrame implements ActionListener {
 
     public static void main(String[] args) {
         // Test
-        DatabaseConnection databaseConnection = new DatabaseConnection();
-        Connection existingConnection = databaseConnection.getConnection();
-        new ApprovisionnerArticle(1, existingConnection);
+        new ApprovisionnerArticle(1);
     }
 }

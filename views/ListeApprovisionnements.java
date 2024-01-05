@@ -16,12 +16,14 @@ public class ListeApprovisionnements extends JFrame {
 
     private JTable tableApprovisionnements;
 
-    public ListeApprovisionnements(Connection connection) {
+    public ListeApprovisionnements() {
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        Connection connection = databaseConnection.getConnection();
         // Configuration de la fenêtre
         this.setTitle("Liste des Approvisionnements");
         this.setSize(800, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        TopNavBar topNavBar = new TopNavBar(connection);
+        TopNavBar topNavBar = new TopNavBar(this);
         this.setJMenuBar(topNavBar);
 
         // Création d'un modèle de tableau et définition des noms de colonnes
@@ -74,8 +76,6 @@ public class ListeApprovisionnements extends JFrame {
     }
 
     public static void main(String[] args) {
-        DatabaseConnection databaseConnection = new DatabaseConnection();
-        Connection existingConnection = databaseConnection.getConnection();
-        new ListeApprovisionnements(existingConnection);
+        new ListeApprovisionnements();
     }
 }

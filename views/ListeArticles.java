@@ -38,7 +38,7 @@ public class ListeArticles extends JFrame implements ActionListener {
         this.setSize(800, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // navbar
-        TopNavBar topNavBar = new TopNavBar(connexion);
+        TopNavBar topNavBar = new TopNavBar(this);
         this.setJMenuBar(topNavBar);
 
         // Création d'un modèle de tableau et définir les noms de colonnes
@@ -171,9 +171,7 @@ public class ListeArticles extends JFrame implements ActionListener {
             if (selectedRow >= 0) {
                 int idArticle = (int) tableArticles.getValueAt(selectedRow, 0);
                 this.setVisible(false);
-                DatabaseConnection databaseConnection = new DatabaseConnection();
-                Connection existingConnection = databaseConnection.getConnection();
-                new ModifierArticle(idArticle, existingConnection);
+                new ModifierArticle(idArticle);
             } else {
                 JOptionPane.showMessageDialog(this, "Veuillez sélectionner une ligne pour la modification.");
             }
@@ -220,29 +218,23 @@ public class ListeArticles extends JFrame implements ActionListener {
         }
 
         if (e.getSource() == seuilApprovisionnementButton) {
-            DatabaseConnection databaseConnection = new DatabaseConnection();
-            Connection existingConnection = databaseConnection.getConnection();
-            new ListeArticlesSousSeuilAppro(existingConnection);
+            new ListeArticlesSousSeuilAppro();
         }
 
         if (e.getSource() == approvisionnerButton) {
             int selectedRow = tableArticles.getSelectedRow();
             int idArticle = (int) tableArticles.getValueAt(selectedRow, 0);
             // System.out.println(idArticle);
-            DatabaseConnection databaseConnection = new DatabaseConnection();
-            Connection existingConnection = databaseConnection.getConnection();
 
-            new ApprovisionnerArticle(idArticle, existingConnection);
+            new ApprovisionnerArticle(idArticle);
             this.setVisible(false);
         }
 
         if (e.getSource() == vendreArticleButton) {
             int selectedRow = tableArticles.getSelectedRow();
             int idArticle = (int) tableArticles.getValueAt(selectedRow, 0);
-            DatabaseConnection databaseConnection = new DatabaseConnection();
-            Connection existingConnection = databaseConnection.getConnection();
 
-            new VendreArticle(idArticle, existingConnection);
+            new VendreArticle(idArticle);
         }
     }
 
@@ -291,8 +283,6 @@ public class ListeArticles extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        DatabaseConnection databaseConnection = new DatabaseConnection();
-        Connection existingConnection = databaseConnection.getConnection();
         new ListeArticles();
     }
 }
