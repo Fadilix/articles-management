@@ -20,7 +20,7 @@ public class EnregistrementArticle extends JFrame {
 
     public EnregistrementArticle(Connection connection) {
         this.connection = connection;
-        TopNavBar topNavBar = new TopNavBar(this, connection);
+        TopNavBar topNavBar = new TopNavBar( connection);
         this.setJMenuBar(topNavBar);
 
         libel = new JTextField(30); // Increased input size

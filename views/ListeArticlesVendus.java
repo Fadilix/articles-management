@@ -22,7 +22,7 @@ public class ListeArticlesVendus extends JFrame {
         this.setSize(800, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-           TopNavBar topNavBar = new TopNavBar(this, connexion);
+           TopNavBar topNavBar = new TopNavBar(connexion);
         this.setJMenuBar(topNavBar);
 
         // Création d'un modèle de tableau et définition des noms de colonnes

@@ -31,6 +31,8 @@ public class ApprovisionnerArticle extends JFrame implements ActionListener {
         this.setSize(400, 200);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
+        TopNavBar topNavBar = new TopNavBar(existingConnection);
+        this.setJMenuBar(topNavBar);
 
 
         // Création des composants

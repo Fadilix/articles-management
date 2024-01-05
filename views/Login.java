@@ -84,7 +84,8 @@ public class Login extends JFrame implements ActionListener {
         String password = new String(passwordChars);
 
         if (username.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Username and password are required.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Username and password are required.", "Error",
+                    JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -97,11 +98,14 @@ public class Login extends JFrame implements ActionListener {
                 ResultSet resultSet = preparedStatement.executeQuery();
 
                 if (resultSet.next()) {
-                    JOptionPane.showMessageDialog(this, "Login successful.", "Welcome", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Login successful.", "Welcome",
+                            JOptionPane.INFORMATION_MESSAGE);
                     dispose();
-                    new WelcomePage(username);
+
+                    new WelcomePage(username, connection);
                 } else {
-                    JOptionPane.showMessageDialog(this, "Invalid username or password.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Invalid username or password.", "Error",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             }
 

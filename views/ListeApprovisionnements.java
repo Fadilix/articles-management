@@ -21,7 +21,7 @@ public class ListeApprovisionnements extends JFrame {
         this.setTitle("Liste des Approvisionnements");
         this.setSize(800, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        TopNavBar topNavBar = new TopNavBar(this, connection);
+        TopNavBar topNavBar = new TopNavBar(connection);
         this.setJMenuBar(topNavBar);
 
         // Création d'un modèle de tableau et définition des noms de colonnes

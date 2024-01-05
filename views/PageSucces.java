@@ -21,7 +21,7 @@ public class PageSucces extends JFrame implements ActionListener {
         successMessage = new JLabel("L'article a été enregistré avec succès");
         successMessage.setHorizontalAlignment(JLabel.CENTER);
 
-        TopNavBar topNavBar = new TopNavBar(this, connection);
+        TopNavBar topNavBar = new TopNavBar(connection);
         this.setJMenuBar(topNavBar);
 
         Font messageFont = new Font("Arial", Font.PLAIN, 18);

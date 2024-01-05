@@ -31,7 +31,7 @@ public class ModifierArticle extends JFrame implements ActionListener {
     public ModifierArticle(int idArticle, Connection connection) {
         this.idArticle = idArticle;
         this.connection = connection;
-        TopNavBar topNavBar = new TopNavBar(this, connection);
+        TopNavBar topNavBar = new TopNavBar(connection);
         this.setJMenuBar(topNavBar);
 
         label = new JLabel("Modification de l'article avec ID : " + idArticle);

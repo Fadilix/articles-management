@@ -19,7 +19,7 @@ public class ListeArticlesSousSeuilAppro extends JFrame {
         this.setTitle("Liste des Articles sous le seuil d'approvisionnement");
         this.setSize(800, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-           TopNavBar topNavBar = new TopNavBar(this, connection);
+           TopNavBar topNavBar = new TopNavBar(connection);
         this.setJMenuBar(topNavBar);
 
         // Création d'un modèle de tableau et définir les noms de colonnes
