@@ -13,7 +13,11 @@ import java.sql.Connection;
 
 public class TopNavBar extends JMenuBar {
 
-    public TopNavBar(Connection connection) {
+    private JFrame parentFrame;
+
+    public TopNavBar(JFrame parentFrame, Connection connection) {
+        this.parentFrame = parentFrame;
+
         // Menu "Articles"
         JMenu menuArticles = new JMenu("Articles");
         JMenuItem enregistrementItem = new JMenuItem("Enregistrer un article");
@@ -21,23 +25,45 @@ public class TopNavBar extends JMenuBar {
         JMenuItem categorieArticlesItem = new JMenuItem("Catégories d'articles");
         JMenuItem seuilApproItem = new JMenuItem("Articles sous seuil d'approvisionnement");
 
-        enregistrementItem.addActionListener(e -> new EnregistrementArticle(connection));
-        listeArticlesItem.addActionListener(e -> new ListeArticles(connection));
-        categorieArticlesItem.addActionListener(e -> new ListeCategories(connection));
-        seuilApproItem.addActionListener(e -> new ListeArticlesSousSeuilAppro(connection));
+        enregistrementItem.addActionListener(e -> {
+            new EnregistrementArticle(connection);
+            parentFrame.dispose();
+        });
+
+        listeArticlesItem.addActionListener(e -> {
+            new ListeArticles(connection);
+            parentFrame.dispose();
+        });
+
+        categorieArticlesItem.addActionListener(e -> {
+            new ListeCategories(connection);
+            parentFrame.dispose();
+        });
+
+        seuilApproItem.addActionListener(e -> {
+            new ListeArticlesSousSeuilAppro(connection);
+            parentFrame.dispose();
+        });
 
         menuArticles.add(enregistrementItem);
         menuArticles.add(listeArticlesItem);
         menuArticles.add(categorieArticlesItem);
         menuArticles.add(seuilApproItem);
 
-        // Menu "Vente" 
+        // Menu "Vente"
         JMenu menuVente = new JMenu("Vente");
         JMenuItem vendreItem = new JMenuItem("Vendre un article");
         JMenuItem listeVendusItem = new JMenuItem("Liste des articles vendus");
 
-        vendreItem.addActionListener(e -> new ListeArticles(connection)); // Change here
-        listeVendusItem.addActionListener(e -> new ListeArticlesVendus(connection));
+        vendreItem.addActionListener(e -> {
+            new ListeArticles(connection);
+            parentFrame.dispose();
+        });
+
+        listeVendusItem.addActionListener(e -> {
+            new ListeArticlesVendus(connection);
+            parentFrame.dispose();
+        });
 
         menuVente.add(vendreItem);
         menuVente.add(listeVendusItem);
@@ -46,7 +72,10 @@ public class TopNavBar extends JMenuBar {
         JMenu menuApprovisionnement = new JMenu("Approvisionnement");
         JMenuItem listeApproItem = new JMenuItem("Liste des approvisionnements");
 
-        listeApproItem.addActionListener(e -> new ListeApprovisionnements(connection));
+        listeApproItem.addActionListener(e -> {
+            new ListeApprovisionnements(connection);
+            parentFrame.dispose();
+        });
 
         menuApprovisionnement.add(listeApproItem);
 
@@ -60,7 +89,12 @@ public class TopNavBar extends JMenuBar {
         SwingUtilities.invokeLater(() -> {
             DatabaseConnection databaseConnection = new DatabaseConnection();
             Connection existingConnection = databaseConnection.getConnection();
-            new TopNavBar(existingConnection);
+            JFrame frame = new JFrame("Your Application Name");
+            new TopNavBar(frame, existingConnection);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(800, 600);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
         });
     }
 }

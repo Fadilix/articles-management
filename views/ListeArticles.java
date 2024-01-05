@@ -37,7 +37,7 @@ public class ListeArticles extends JFrame implements ActionListener {
         this.setSize(800, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
            //navbar 
-        TopNavBar topNavBar = new TopNavBar(existingConnection);
+        TopNavBar topNavBar = new TopNavBar(this, existingConnection);
         this.setJMenuBar(topNavBar);
 
         // Création d'un modèle de tableau et définir les noms de colonnes

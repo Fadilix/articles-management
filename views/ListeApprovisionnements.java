@@ -1,8 +1,10 @@
 package views;
 
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import components.TopNavBar;
+
 import java.awt.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -19,6 +21,8 @@ public class ListeApprovisionnements extends JFrame {
         this.setTitle("Liste des Approvisionnements");
         this.setSize(800, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        TopNavBar topNavBar = new TopNavBar(this, connection);
+        this.setJMenuBar(topNavBar);
 
         // Création d'un modèle de tableau et définition des noms de colonnes
         DefaultTableModel modeleTableau = new DefaultTableModel();
@@ -27,7 +31,8 @@ public class ListeApprovisionnements extends JFrame {
         modeleTableau.addColumn("Date Approvisionnement");
         modeleTableau.addColumn("Quantité Approvisionnée");
 
-        // Récupération des données depuis la base de données et ajout au modèle de tableau
+        // Récupération des données depuis la base de données et ajout au modèle de
+        // tableau
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM Approvisionnement");

@@ -20,7 +20,7 @@ public class EnregistrementArticle extends JFrame {
 
     public EnregistrementArticle(Connection connection) {
         this.connection = connection;
-        TopNavBar topNavBar = new TopNavBar(connection);
+        TopNavBar topNavBar = new TopNavBar(this, connection);
         this.setJMenuBar(topNavBar);
 
         libel = new JTextField(30); // Increased input size
@@ -158,7 +158,10 @@ public class EnregistrementArticle extends JFrame {
             preparedStatement.close();
             prepCatStatement.close();
             this.setVisible(false);
-            new PageSucces();
+
+            DatabaseConnection databaseConnection = new DatabaseConnection();
+            Connection connection = databaseConnection.getConnection();
+            new PageSucces(connection);
 
         } catch (SQLException ex) {
             ex.printStackTrace();

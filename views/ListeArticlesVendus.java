@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.table.DefaultTableModel;
 
+import components.TopNavBar;
 import database.DatabaseConnection;
 
 public class ListeArticlesVendus extends JFrame {
@@ -20,6 +21,9 @@ public class ListeArticlesVendus extends JFrame {
         this.setTitle("Liste des Articles Vendus");
         this.setSize(800, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+           TopNavBar topNavBar = new TopNavBar(this, connexion);
+        this.setJMenuBar(topNavBar);
 
         // Création d'un modèle de tableau et définition des noms de colonnes
         DefaultTableModel modeleTableau = new DefaultTableModel();

@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import components.TopNavBar;
 import database.DatabaseConnection;
 
 public class ModifierArticle extends JFrame implements ActionListener {
@@ -30,6 +31,8 @@ public class ModifierArticle extends JFrame implements ActionListener {
     public ModifierArticle(int idArticle, Connection connection) {
         this.idArticle = idArticle;
         this.connection = connection;
+        TopNavBar topNavBar = new TopNavBar(this, connection);
+        this.setJMenuBar(topNavBar);
 
         label = new JLabel("Modification de l'article avec ID : " + idArticle);
         this.setSize(800, 600);
@@ -142,7 +145,6 @@ public class ModifierArticle extends JFrame implements ActionListener {
                 ex.printStackTrace();
             }
         }
-
 
     }
 

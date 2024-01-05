@@ -3,34 +3,43 @@ package views;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.FlowLayout;
 import java.sql.Connection;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import components.TopNavBar;
 import database.DatabaseConnection;
 
 public class PageSucces extends JFrame implements ActionListener {
     private JLabel successMessage;
     private JButton viewArticlesButton;
+    private JButton nouvArticleButton;
 
-    public PageSucces() {
+    public PageSucces(Connection connection) {
         successMessage = new JLabel("L'article a été enregistré avec succès");
-        successMessage.setBounds(100, 50, 300, 50);
         successMessage.setHorizontalAlignment(JLabel.CENTER);
+
+        TopNavBar topNavBar = new TopNavBar(this, connection);
+        this.setJMenuBar(topNavBar);
 
         Font messageFont = new Font("Arial", Font.PLAIN, 18);
         successMessage.setFont(messageFont);
 
         viewArticlesButton = new JButton("Voir la liste des articles");
-        viewArticlesButton.setBounds(150, 120, 200, 40);
         viewArticlesButton.addActionListener(this);
 
-        // Set up frame
+        nouvArticleButton = new JButton("Enregistrer nouvel article");
+        nouvArticleButton.addActionListener(this);
+
+        // Set up frame with FlowLayout
+        this.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10)); // Adjust as needed
+
         this.add(successMessage);
         this.add(viewArticlesButton);
-        this.setLayout(null);
+        this.add(nouvArticleButton);
+
         this.setSize(500, 200);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
@@ -49,6 +58,8 @@ public class PageSucces extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new PageSucces();
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        Connection connection = databaseConnection.getConnection();
+        new PageSucces(connection);
     }
 }

@@ -2,6 +2,9 @@ package views;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import components.TopNavBar;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -16,6 +19,8 @@ public class ListeArticlesSousSeuilAppro extends JFrame {
         this.setTitle("Liste des Articles sous le seuil d'approvisionnement");
         this.setSize(800, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+           TopNavBar topNavBar = new TopNavBar(this, connection);
+        this.setJMenuBar(topNavBar);
 
         // Création d'un modèle de tableau et définir les noms de colonnes
         DefaultTableModel modeleTableau = new DefaultTableModel();
