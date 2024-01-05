@@ -104,7 +104,7 @@ public class ApprovisionnerArticle extends JFrame implements ActionListener {
                 this.dispose();
                 DatabaseConnection databaseConnection = new DatabaseConnection();
                 Connection existingConnection = databaseConnection.getConnection();
-                new ListeArticles(existingConnection);
+                new ListeArticles();
 
             } catch (NumberFormatException | SQLException ex) {
                 ex.printStackTrace();

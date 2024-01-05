@@ -52,7 +52,7 @@ public class PageSucces extends JFrame implements ActionListener {
             // Redirect to the article list page
             DatabaseConnection databaseConnection = new DatabaseConnection();
             Connection existingConnection = databaseConnection.getConnection();
-            new ListeArticles(existingConnection);
+            new ListeArticles();
             this.dispose(); // Close the current success page
         }
     }

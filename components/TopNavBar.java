@@ -9,6 +9,7 @@ import views.ListeArticlesSousSeuilAppro;
 import views.ListeArticlesVendus;
 import views.ListeCategories;
 
+import java.awt.Color;
 import java.sql.Connection;
 
 public class TopNavBar extends JMenuBar {
@@ -16,13 +17,14 @@ public class TopNavBar extends JMenuBar {
     public TopNavBar(Connection connection) {
         // Menu "Articles"
         JMenu menuArticles = new JMenu("Articles");
+        menuArticles.setForeground(Color.WHITE);
         JMenuItem enregistrementItem = new JMenuItem("Enregistrer un article");
         JMenuItem listeArticlesItem = new JMenuItem("Liste des articles");
         JMenuItem categorieArticlesItem = new JMenuItem("Catégories d'articles");
         JMenuItem seuilApproItem = new JMenuItem("Articles sous seuil d'approvisionnement");
 
-        enregistrementItem.addActionListener(e -> {new EnregistrementArticle(connection));
-        listeArticlesItem.addActionListener(e -> new ListeArticles(connection));
+        enregistrementItem.addActionListener(e -> new EnregistrementArticle(connection));
+        listeArticlesItem.addActionListener(e -> new ListeArticles());
         categorieArticlesItem.addActionListener(e -> new ListeCategories(connection));
         seuilApproItem.addActionListener(e -> new ListeArticlesSousSeuilAppro(connection));
 
@@ -31,12 +33,14 @@ public class TopNavBar extends JMenuBar {
         menuArticles.add(categorieArticlesItem);
         menuArticles.add(seuilApproItem);
 
-        // Menu "Vente" 
+        // Menu "Vente"
         JMenu menuVente = new JMenu("Vente");
+        menuVente.setForeground(Color.WHITE);
+
         JMenuItem vendreItem = new JMenuItem("Vendre un article");
         JMenuItem listeVendusItem = new JMenuItem("Liste des articles vendus");
 
-        vendreItem.addActionListener(e -> new ListeArticles(connection));
+        vendreItem.addActionListener(e -> new ListeArticles());
         listeVendusItem.addActionListener(e -> new ListeArticlesVendus(connection));
 
         menuVente.add(vendreItem);
@@ -44,6 +48,7 @@ public class TopNavBar extends JMenuBar {
 
         // Menu "Approvisionnement"
         JMenu menuApprovisionnement = new JMenu("Approvisionnement");
+        menuApprovisionnement.setForeground(Color.WHITE);
         JMenuItem listeApproItem = new JMenuItem("Liste des approvisionnements");
 
         listeApproItem.addActionListener(e -> new ListeApprovisionnements(connection));
@@ -55,8 +60,7 @@ public class TopNavBar extends JMenuBar {
         this.add(menuVente);
         this.add(menuApprovisionnement);
 
-
-        // the background 
+        // the background
         this.setBackground(new Color(47, 38, 38)); // #2F2626
 
     }

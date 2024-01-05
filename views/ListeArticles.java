@@ -27,17 +27,18 @@ public class ListeArticles extends JFrame implements ActionListener {
     private JButton seuilApprovisionnementButton;
     private JButton approvisionnerButton;
     private JButton vendreArticleButton;
-    private final Connection existingConnection;
+    // private final Connection existingConnection;
 
-    public ListeArticles(Connection connexion) {
-        this.existingConnection = connexion;
+    public ListeArticles() {
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        Connection connexion = databaseConnection.getConnection();
 
         // Paramètres de l'écran
         this.setTitle("Liste des Articles en Stock");
         this.setSize(800, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-           //navbar 
-        TopNavBar topNavBar = new TopNavBar(existingConnection);
+        // navbar
+        TopNavBar topNavBar = new TopNavBar(connexion);
         this.setJMenuBar(topNavBar);
 
         // Création d'un modèle de tableau et définir les noms de colonnes
@@ -130,7 +131,7 @@ public class ListeArticles extends JFrame implements ActionListener {
         buttonPanel.add(vendreArticleButton);
 
         // Create the label for displaying total articles
-        totalArticlesLabel = new JLabel("Total Articles: " + getTotalArticles(existingConnection));
+        totalArticlesLabel = new JLabel("Total Articles: " + getTotalArticles(connexion));
 
         // Augmenter la taille de police pour le label
         totalArticlesLabel.setFont(new Font("Arial", Font.BOLD, 16));
@@ -197,8 +198,10 @@ public class ListeArticles extends JFrame implements ActionListener {
                         DefaultTableModel model = (DefaultTableModel) tableArticles.getModel();
                         model.removeRow(selectedRow);
 
+                        DatabaseConnection databaseConnection = new DatabaseConnection();
+                        Connection connection = databaseConnection.getConnection();
                         // Mettre à jour le label du total d'articles
-                        totalArticlesLabel.setText("Total Articles: " + getTotalArticles(existingConnection));
+                        totalArticlesLabel.setText("Total Articles: " + getTotalArticles(connection));
 
                         JOptionPane.showMessageDialog(this, "L'article a été supprimé avec succès.");
                     } catch (Exception ex) {
@@ -233,7 +236,7 @@ public class ListeArticles extends JFrame implements ActionListener {
             this.setVisible(false);
         }
 
-        if(e.getSource() == vendreArticleButton){
+        if (e.getSource() == vendreArticleButton) {
             int selectedRow = tableArticles.getSelectedRow();
             int idArticle = (int) tableArticles.getValueAt(selectedRow, 0);
             DatabaseConnection databaseConnection = new DatabaseConnection();
@@ -262,9 +265,11 @@ public class ListeArticles extends JFrame implements ActionListener {
             DefaultTableModel model = (DefaultTableModel) tableArticles.getModel();
             model.setRowCount(0);
 
+            DatabaseConnection databaseConnection = new DatabaseConnection();
+            Connection connection = databaseConnection.getConnection();
             // Recherche des données depuis la base de données
             String query = "SELECT idArticle, libel, prix, quantiteEnStock, designationCat FROM article WHERE libel LIKE ?";
-            try (PreparedStatement preparedStatement = existingConnection.prepareStatement(query)) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, "%" + searchTerm + "%");
                 ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -288,6 +293,6 @@ public class ListeArticles extends JFrame implements ActionListener {
     public static void main(String[] args) {
         DatabaseConnection databaseConnection = new DatabaseConnection();
         Connection existingConnection = databaseConnection.getConnection();
-        new ListeArticles(existingConnection);
+        new ListeArticles();
     }
 }
