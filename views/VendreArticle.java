@@ -192,7 +192,7 @@ public class VendreArticle extends JFrame implements ActionListener {
             if (resultSet.next()) {
                 return resultSet.getDouble("prix");
             } else {
-                throw new SQLException("Article not found for id: " + idArticle);
+                throw new SQLException("Article non trouvé : " + idArticle);
             }
         }
     }
