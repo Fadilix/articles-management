@@ -2,9 +2,7 @@ package views;
 
 import javax.swing.*;
 import components.TopNavBar;
-import database.DatabaseConnection;
 import java.awt.*;
-import java.sql.Connection;
 
 public class WelcomePage extends JFrame {
 

@@ -15,7 +15,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -134,7 +133,7 @@ public class VendreArticle extends JFrame implements ActionListener {
 
                 // Fermeture de la fenêtre après la vente
                 this.dispose();
-            } else{
+            } else {
                 JOptionPane.showMessageDialog(this, "La quantite en stock n'est pas suffisante");
             }
 
