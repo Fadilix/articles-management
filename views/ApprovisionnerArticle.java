@@ -3,6 +3,7 @@ package views;
 import javax.swing.*;
 
 import components.TopNavBar;
+import database.DatabaseConnection;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,8 +17,6 @@ import java.util.Date;
 public class ApprovisionnerArticle extends JFrame implements ActionListener {
 
     private int idArticle;
-    private Connection existingConnection;
-
     private JTextField quantiteField;
     private JButton approvisionnerButton;
 
@@ -31,7 +30,6 @@ public class ApprovisionnerArticle extends JFrame implements ActionListener {
         this.setLayout(new BorderLayout());
         TopNavBar topNavBar = new TopNavBar(this);
         this.setJMenuBar(topNavBar);
-
 
         // Création des composants
         JLabel quantiteLabel = new JLabel("Quantité à approvisionner:");
@@ -57,29 +55,33 @@ public class ApprovisionnerArticle extends JFrame implements ActionListener {
     }
 
     private String getArticleName(int articleId) {
-    // Fetch article name from the database based on articleId
-    String articleName = "";
-    String query = "SELECT libel FROM article WHERE idArticle = ?";
-    try (PreparedStatement preparedStatement = existingConnection.prepareStatement(query)) {
-        preparedStatement.setInt(1, articleId);
-        try (ResultSet resultSet = preparedStatement.executeQuery()) {
-            if (resultSet.next()) {
-                articleName = resultSet.getString("libel");
+        // Fetch article name from the database based on articleId
+
+        String articleName = "";
+        String query = "SELECT libel FROM article WHERE idArticle = ?";
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        Connection existingConnection = databaseConnection.getConnection();
+
+        try (PreparedStatement preparedStatement = existingConnection.prepareStatement(query)) {
+            preparedStatement.setInt(1, articleId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    articleName = resultSet.getString("libel");
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return articleName;
     }
-    return articleName;
-}
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == approvisionnerButton) {
             try {
                 int quantiteApprovisionnee = Integer.parseInt(quantiteField.getText());
-
-                // Update the stock quantity in the article table
+                DatabaseConnection databseConnection = new DatabaseConnection();
+                Connection existingConnection = databseConnection.getConnection();
                 String updateQuery = "UPDATE article SET quantiteEnStock = quantiteEnStock + ? WHERE idArticle = ?";
                 try (PreparedStatement preparedStatement = existingConnection.prepareStatement(updateQuery)) {
                     preparedStatement.setInt(1, quantiteApprovisionnee);
@@ -87,9 +89,6 @@ public class ApprovisionnerArticle extends JFrame implements ActionListener {
                     preparedStatement.executeUpdate();
                 }
 
-                
-
-                // Insert supply information into the approvisionnement table
                 String insertQuery = "INSERT INTO approvisionnement (articleAppro, dateAppro, quantiteAppro) VALUES (?, ?, ?)";
                 try (PreparedStatement preparedStatement = existingConnection.prepareStatement(insertQuery)) {
                     preparedStatement.setString(1, getArticleName(idArticle));

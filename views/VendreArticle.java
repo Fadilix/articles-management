@@ -15,6 +15,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -66,6 +67,28 @@ public class VendreArticle extends JFrame implements ActionListener {
         }
     }
 
+    public boolean estDisponible(int quantiteAvendre) {
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        Connection connection = databaseConnection.getConnection();
+
+        try {
+            String quantiteEnStockSQL = "SELECT quantiteEnStock FROM Article WHERE idArticle = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(quantiteEnStockSQL)) {
+                preparedStatement.setInt(1, idArticle);
+                ResultSet rs = preparedStatement.executeQuery();
+
+                if (rs.next()) {
+                    int quantiteEnStock = rs.getInt("quantiteEnStock");
+                    return quantiteEnStock >= quantiteAvendre;
+                } else {
+                    throw new SQLException("Article not found for id: " + idArticle);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private void vendreArticle() {
         try {
             int quantiteVendue = Integer.parseInt(quantiteField.getText());
@@ -76,39 +99,44 @@ public class VendreArticle extends JFrame implements ActionListener {
             DatabaseConnection databaseConnection = new DatabaseConnection();
             Connection connection = databaseConnection.getConnection();
 
-            // Insertion des données dans la table ArticleVendu
-            String insertQuery = "INSERT INTO ArticleVendu (libel, prix, dateDeVente, designationCat, quantiteVendu, prixTotal, fournisseur) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
-                preparedStatement.setString(1, getLibelle(idArticle));
-                preparedStatement.setDouble(2, prixUnitaire);
-                preparedStatement.setDate(3, getCurrentDate());
-                preparedStatement.setString(4, getDesignationCategorie(idArticle));
-                preparedStatement.setInt(5, quantiteVendue);
-                preparedStatement.setDouble(6, prixTotal);
-                preparedStatement.setString(7, fournisseur);
+            if (estDisponible(quantiteVendue)) {
 
-                preparedStatement.executeUpdate();
+                // Insertion des données dans la table ArticleVendu
+                String insertQuery = "INSERT INTO ArticleVendu (libel, prix, dateDeVente, designationCat, quantiteVendu, prixTotal, fournisseur) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+                    preparedStatement.setString(1, getLibelle(idArticle));
+                    preparedStatement.setDouble(2, prixUnitaire);
+                    preparedStatement.setDate(3, getCurrentDate());
+                    preparedStatement.setString(4, getDesignationCategorie(idArticle));
+                    preparedStatement.setInt(5, quantiteVendue);
+                    preparedStatement.setDouble(6, prixTotal);
+                    preparedStatement.setString(7, fournisseur);
+
+                    preparedStatement.executeUpdate();
+                }
+
+                // Mise à jour de la quantité en stock dans la table Article
+                String updateQuery = "UPDATE Article SET quantiteEnStock = quantiteEnStock - ? WHERE idArticle = ?";
+                try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                    preparedStatement.setInt(1, quantiteVendue);
+                    preparedStatement.setInt(2, idArticle);
+
+                    preparedStatement.executeUpdate();
+                }
+
+                // Génération du reçu PDF
+                generateReceipt(idArticle, getLibelle(idArticle), getDesignationCategorie(idArticle), quantiteVendue,
+                        prixTotal);
+
+                // Affichage d'un message de succès
+                JOptionPane.showMessageDialog(this, "L'article a été vendu avec succès. Le reçu a été généré.",
+                        "Vente réussie", JOptionPane.INFORMATION_MESSAGE);
+
+                // Fermeture de la fenêtre après la vente
+                this.dispose();
+            } else{
+                JOptionPane.showMessageDialog(this, "La quantite en stock n'est pas suffisante");
             }
-
-            // Mise à jour de la quantité en stock dans la table Article
-            String updateQuery = "UPDATE Article SET quantiteEnStock = quantiteEnStock - ? WHERE idArticle = ?";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
-                preparedStatement.setInt(1, quantiteVendue);
-                preparedStatement.setInt(2, idArticle);
-
-                preparedStatement.executeUpdate();
-            }
-
-            // Génération du reçu PDF
-            generateReceipt(idArticle, getLibelle(idArticle), getDesignationCategorie(idArticle), quantiteVendue,
-                    prixTotal);
-
-            // Affichage d'un message de succès
-            JOptionPane.showMessageDialog(this, "L'article a été vendu avec succès. Le reçu a été généré.",
-                    "Vente réussie", JOptionPane.INFORMATION_MESSAGE);
-
-            // Fermeture de la fenêtre après la vente
-            this.dispose();
 
         } catch (NumberFormatException | SQLException ex) {
             ex.printStackTrace();

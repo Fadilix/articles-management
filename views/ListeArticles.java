@@ -223,18 +223,28 @@ public class ListeArticles extends JFrame implements ActionListener {
 
         if (e.getSource() == approvisionnerButton) {
             int selectedRow = tableArticles.getSelectedRow();
-            int idArticle = (int) tableArticles.getValueAt(selectedRow, 0);
-            // System.out.println(idArticle);
+            if (selectedRow >= 0) {
+                int idArticle = (int) tableArticles.getValueAt(selectedRow, 0);
+                new ApprovisionnerArticle(idArticle);
+                this.setVisible(false);
 
-            new ApprovisionnerArticle(idArticle);
-            this.setVisible(false);
+            } else {
+                JOptionPane.showMessageDialog(this, "Veuillez selectionner un produit pour l'approvionnement !");
+            }
         }
 
         if (e.getSource() == vendreArticleButton) {
-            int selectedRow = tableArticles.getSelectedRow();
-            int idArticle = (int) tableArticles.getValueAt(selectedRow, 0);
 
-            new VendreArticle(idArticle);
+            int selectedRow = tableArticles.getSelectedRow();
+            if (selectedRow >= 0) {
+
+                int idArticle = (int) tableArticles.getValueAt(selectedRow, 0);
+                new VendreArticle(idArticle);
+                setVisible(false);
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Veuillez choisir le produit à vendre !");
+            }
         }
     }
 

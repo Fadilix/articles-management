@@ -1,7 +1,6 @@
 package components;
 
 import javax.swing.*;
-import database.DatabaseConnection;
 import views.EnregistrementArticle;
 import views.ListeApprovisionnements;
 import views.ListeArticles;

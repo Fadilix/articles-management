@@ -12,16 +12,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class EnregistrementArticle extends JFrame {
-
     private JButton boutonValider;
     private JTextField libel, prix, quantiteSeuil, designationCat;
 
-    private final Connection connection;
-
     public EnregistrementArticle() {
-        DatabaseConnection databaseConnection = new DatabaseConnection();
-        Connection connection = databaseConnection.getConnection();
-        this.connection = connection;
         TopNavBar topNavBar = new TopNavBar(this);
         this.setJMenuBar(topNavBar);
 
@@ -111,6 +105,8 @@ public class EnregistrementArticle extends JFrame {
 
     private void insertIntoDatabase() {
         try {
+            DatabaseConnection databaseConnection = new DatabaseConnection();
+            Connection connection = databaseConnection.getConnection();
             // Validate input data
             if (libel.getText().isEmpty() || prix.getText().isEmpty() || quantiteSeuil.getText().isEmpty()
                     || designationCat.getText().isEmpty()) {
