@@ -4,6 +4,8 @@ import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
+
+import components.TopNavBar;
 import database.DatabaseConnection;
 
 import javax.swing.*;
@@ -31,6 +33,8 @@ public class VendreArticle extends JFrame implements ActionListener {
         this.setTitle("Vendre Article");
         this.setSize(400, 200);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        TopNavBar topNavBar = new TopNavBar(this);
+        this.setJMenuBar(topNavBar);
 
         // Création des composants
         quantiteField = new JTextField(10);
