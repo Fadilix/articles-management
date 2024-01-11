@@ -96,7 +96,7 @@ public class EnregistrementArticle extends JFrame {
         this.add(panel);
         this.setTitle("Enregistrement d'Article");
         this.setSize(600, 500); // Adjusted size
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 

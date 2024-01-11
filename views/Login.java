@@ -20,7 +20,7 @@ public class Login extends JFrame implements ActionListener {
     public Login() {
         setTitle("User Login");
         setSize(800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // Styling
         Font labelFont = new Font("Arial", Font.PLAIN, 24);

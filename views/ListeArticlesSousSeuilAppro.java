@@ -20,7 +20,7 @@ public class ListeArticlesSousSeuilAppro extends JFrame {
         Connection connection = databaseConnection.getConnection();
         this.setTitle("Liste des Articles sous le seuil d'approvisionnement");
         this.setSize(800, 600);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
            TopNavBar topNavBar = new TopNavBar(this);
         this.setJMenuBar(topNavBar);
 

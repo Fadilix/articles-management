@@ -39,7 +39,7 @@ public class PageSucces extends JFrame implements ActionListener {
         this.add(nouvArticleButton);
 
         this.setSize(500, 200);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }

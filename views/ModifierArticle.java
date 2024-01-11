@@ -94,7 +94,7 @@ public class ModifierArticle extends JFrame implements ActionListener {
         boutonValider.addActionListener(this);
 
         this.add(panel);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setVisible(true);
     }
 

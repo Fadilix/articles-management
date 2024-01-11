@@ -26,7 +26,7 @@ public class ApprovisionnerArticle extends JFrame implements ActionListener {
         // Paramètres de l'écran
         this.setTitle("Approvisionner Article");
         this.setSize(400, 200);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLayout(new BorderLayout());
         TopNavBar topNavBar = new TopNavBar(this);
         this.setJMenuBar(topNavBar);

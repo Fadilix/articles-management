@@ -19,7 +19,7 @@ public class Register extends JFrame implements ActionListener {
     public Register() {
         setTitle("User Registration");
         setSize(800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // Styling
         Font labelFont = new Font("Arial", Font.PLAIN, 24);

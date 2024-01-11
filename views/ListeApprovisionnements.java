@@ -22,7 +22,7 @@ public class ListeApprovisionnements extends JFrame {
         // Configuration de la fenêtre
         this.setTitle("Liste des Approvisionnements");
         this.setSize(800, 600);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         TopNavBar topNavBar = new TopNavBar(this);
         this.setJMenuBar(topNavBar);
 

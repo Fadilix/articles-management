@@ -17,7 +17,7 @@ public class WelcomePage extends JFrame {
 
         this.setTitle("Welcome");
         this.setSize(600, 400);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // Creating components
         welcomeLabel = new JLabel("Welcome, " + username + "!");
