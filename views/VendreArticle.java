@@ -160,16 +160,22 @@ public class VendreArticle extends JFrame implements ActionListener {
             // vos besoins)
             Paragraph title = new Paragraph("Reçu pour la vente d'article");
             title.setAlignment(Paragraph.ALIGN_CENTER);
-            title.setFont(new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA, 18,
+            title.setFont(new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.COURIER, 40,
                     com.itextpdf.text.Font.BOLD));
             document.add(title);
 
             document.add(Chunk.NEWLINE); // Espacement
 
             document.add(createReceiptLine("ID de l'article", String.valueOf(idArticle)));
+            document.add(createInterLine());
             document.add(createReceiptLine("Libellé", libelle));
+            document.add(createInterLine());
             document.add(createReceiptLine("Catégorie", designationCat));
+            document.add(createInterLine());
+
             document.add(createReceiptLine("Quantité vendue", String.valueOf(quantiteVendue)));
+            document.add(createInterLine());
+
             document.add(createReceiptLine("Prix total", "$" + prixTotal));
 
             // Fermeture du document
@@ -185,11 +191,19 @@ public class VendreArticle extends JFrame implements ActionListener {
         }
     }
 
+    private Paragraph createInterLine() {
+        Paragraph line = new Paragraph();
+        line.add(new Chunk("----------------------------------------------------------",
+                new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.COURIER, 12,
+                        com.itextpdf.text.Font.BOLD)));
+        return line;
+    }
+
     private Paragraph createReceiptLine(String label, String value) {
         Paragraph line = new Paragraph();
-        line.add(new Chunk(label + ": ", new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA, 12,
+        line.add(new Chunk(label + ": ", new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.COURIER, 12,
                 com.itextpdf.text.Font.BOLD)));
-        line.add(new Chunk(value, new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA, 12)));
+        line.add(new Chunk(value, new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.COURIER, 12)));
         return line;
     }
 
@@ -253,6 +267,6 @@ public class VendreArticle extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new VendreArticle(1);
+        new VendreArticle(2);
     }
 }
