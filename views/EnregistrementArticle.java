@@ -191,6 +191,7 @@ public class EnregistrementArticle extends JFrame {
                     preparedStatement.setString(6, categorieDropdown.getSelectedItem().toString());
 
                     int rowsInserted = preparedStatement.executeUpdate();
+                    new PageSucces();
 
                     if (rowsInserted > 0) {
                         JOptionPane.showMessageDialog(this, "L'enregistrement a été inséré avec succès !", "Succès",

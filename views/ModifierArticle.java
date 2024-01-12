@@ -145,6 +145,9 @@ public class ModifierArticle extends JFrame implements ActionListener {
                     System.out.println("La mise à jour a échoué.");
                 }
 
+                new ListeArticles();
+                this.dispose();
+
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }

@@ -23,7 +23,7 @@ import java.util.Date;
 public class VendreArticle extends JFrame implements ActionListener {
 
     private JTextField quantiteField;
-    private JTextField fournisseurField;
+    private JTextField clientField;
     private JButton vendreButton;
     private int idArticle;
 
@@ -38,7 +38,7 @@ public class VendreArticle extends JFrame implements ActionListener {
 
         // Création des composants
         quantiteField = new JTextField(10);
-        fournisseurField = new JTextField(10);
+        clientField = new JTextField(10);
         vendreButton = new JButton("Vendre");
 
         // Ajout des écouteurs d'événements
@@ -49,8 +49,8 @@ public class VendreArticle extends JFrame implements ActionListener {
         formPanel.setLayout(new GridLayout(3, 2));
         formPanel.add(new JLabel("Quantité :"));
         formPanel.add(quantiteField);
-        formPanel.add(new JLabel("Fournisseur :"));
-        formPanel.add(fournisseurField);
+        formPanel.add(new JLabel("Client :"));
+        formPanel.add(clientField);
         formPanel.add(new JLabel("")); // espace vide
         formPanel.add(vendreButton);
 
@@ -95,7 +95,7 @@ public class VendreArticle extends JFrame implements ActionListener {
     private void vendreArticle() {
         try {
             int quantiteVendue = Integer.parseInt(quantiteField.getText());
-            String fournisseur = fournisseurField.getText();
+            String client = clientField.getText();
             double prixUnitaire = getPrixUnitaire(idArticle);
             double prixTotal = quantiteVendue * prixUnitaire;
 
@@ -105,7 +105,7 @@ public class VendreArticle extends JFrame implements ActionListener {
             if (estDisponible(quantiteVendue)) {
 
                 // Insertion des données dans la table ArticleVendu
-                String insertQuery = "INSERT INTO ArticleVendu (libel, prix, dateDeVente, designationCat, quantiteVendu, prixTotal, fournisseur) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                String insertQuery = "INSERT INTO ArticleVendu (libel, prix, dateDeVente, designationCat, quantiteVendu, prixTotal, client) VALUES (?, ?, ?, ?, ?, ?, ?)";
                 try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
                     preparedStatement.setString(1, getLibelle(idArticle));
                     preparedStatement.setDouble(2, prixUnitaire);
@@ -113,7 +113,7 @@ public class VendreArticle extends JFrame implements ActionListener {
                     preparedStatement.setString(4, getDesignationCategorie(idArticle));
                     preparedStatement.setInt(5, quantiteVendue);
                     preparedStatement.setDouble(6, prixTotal);
-                    preparedStatement.setString(7, fournisseur);
+                    preparedStatement.setString(7, client);
 
                     preparedStatement.executeUpdate();
                 }
@@ -169,7 +169,7 @@ public class VendreArticle extends JFrame implements ActionListener {
             document.add(title);
 
             document.add(Chunk.NEWLINE); // Espacement
-
+            document.add(createReceiptLine("Client", String.valueOf("")));
             document.add(createReceiptLine("ID de l'article", String.valueOf(idArticle)));
             document.add(createInterLine());
             document.add(createReceiptLine("Libellé", libelle));

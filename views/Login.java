@@ -41,7 +41,7 @@ public class Login extends JFrame implements ActionListener {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        JLabel usernameLabel = new JLabel("Username:");
+        JLabel usernameLabel = new JLabel("Nom d'utilisateur:");
         usernameLabel.setFont(labelFont);
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -50,7 +50,7 @@ public class Login extends JFrame implements ActionListener {
         gbc.gridx = 1;
         formPanel.add(usernameField, gbc);
 
-        JLabel passwordLabel = new JLabel("Password:");
+        JLabel passwordLabel = new JLabel("Mot de passe:");
         passwordLabel.setFont(labelFont);
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -84,7 +84,7 @@ public class Login extends JFrame implements ActionListener {
         String password = new String(passwordChars);
 
         if (username.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Username and password are required.", "Error",
+            JOptionPane.showMessageDialog(this, "Le nom d'utilisateur et le mot de passe sont requis", "Error",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -98,13 +98,13 @@ public class Login extends JFrame implements ActionListener {
                 ResultSet resultSet = preparedStatement.executeQuery();
 
                 if (resultSet.next()) {
-                    JOptionPane.showMessageDialog(this, "Login successful.", "Welcome",
+                    JOptionPane.showMessageDialog(this, "Connexion réussie", "Welcome",
                             JOptionPane.INFORMATION_MESSAGE);
                     dispose();
 
                     new WelcomePage(username);
                 } else {
-                    JOptionPane.showMessageDialog(this, "Invalid username or password.", "Error",
+                    JOptionPane.showMessageDialog(this, "Nom d'utiliasteur ou mot de passe erroné", "Error",
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
