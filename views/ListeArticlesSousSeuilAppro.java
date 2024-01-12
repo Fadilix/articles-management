@@ -21,7 +21,7 @@ public class ListeArticlesSousSeuilAppro extends JFrame {
         this.setTitle("Liste des Articles sous le seuil d'approvisionnement");
         this.setSize(800, 600);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-           TopNavBar topNavBar = new TopNavBar(this);
+        TopNavBar topNavBar = new TopNavBar(this);
         this.setJMenuBar(topNavBar);
 
         // Création d'un modèle de tableau et définir les noms de colonnes
@@ -32,10 +32,12 @@ public class ListeArticlesSousSeuilAppro extends JFrame {
         modeleTableau.addColumn("Quantité en Stock");
         modeleTableau.addColumn("Seuil d'approvisionnement");
 
-        // Récupération des données depuis la base de données et ajout au modèle de tableau
+        // Récupération des données depuis la base de données et ajout au modèle de
+        // tableau
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT idArticle, libel, prix, quantiteEnStock, quantiteSeuil FROM article WHERE quantiteEnStock < quantiteSeuil");
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT idArticle, libel, prix, quantiteEnStock, quantiteSeuil FROM article WHERE quantiteEnStock < quantiteSeuil");
 
             while (resultSet.next()) {
                 Object[] ligneDonnees = {
