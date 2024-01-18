@@ -2,9 +2,7 @@ package views;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-
 import components.TopNavBar;
-
 import java.awt.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -21,7 +19,16 @@ public class ListeApprovisionnements extends JFrame {
         Connection connection = databaseConnection.getConnection();
         // Configuration de la fenêtre
         this.setTitle("Liste des Approvisionnements");
-        this.setSize(800, 600);
+
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice gd = ge.getDefaultScreenDevice();
+        Dimension screenSize = gd.getDefaultConfiguration().getBounds().getSize();
+
+        this.setSize(screenSize);
+        // Maximisez la fenêtre pour la mettre en plein écran
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+        // Quittez l'application lorsque la fenêtre est fermée
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         TopNavBar topNavBar = new TopNavBar(this);
         this.setJMenuBar(topNavBar);

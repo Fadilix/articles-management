@@ -7,6 +7,8 @@ import views.ListeArticles;
 import views.ListeArticlesSousSeuilAppro;
 import views.ListeArticlesVendus;
 import views.ListeCategories;
+import views.Login;
+import views.Register;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -27,6 +29,9 @@ public class TopNavBar extends JMenuBar {
         JMenuItem listeArticlesItem = new JMenuItem("Liste des articles");
         JMenuItem categorieArticlesItem = new JMenuItem("Catégories d'articles");
         JMenuItem seuilApproItem = new JMenuItem("Articles sous seuil d'approvisionnement");
+
+        // Menu authentification
+
 
         enregistrementItem.addActionListener(new ActionListener() {
             @Override
@@ -113,7 +118,37 @@ public class TopNavBar extends JMenuBar {
 
         // the background
         this.setBackground(new Color(47, 38, 38)); // #2F2626
+
+        JMenu menuAuth = new JMenu("Authentification");
+        JMenuItem login = new JMenuItem("Login");
+        JMenuItem inscription = new JMenuItem("Inscription");
+
+
+        login.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new Login();
+                parentFrame.dispose();
+            }
+        });
+
+
+        inscription.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO Auto-generated method stub
+                new Register();
+                parentFrame.dispose();
+            }
+        });
+
+        menuAuth.add(login);
+        menuAuth.add(inscription);
+        menuAuth.setForeground(Color.WHITE);
+        this.add(menuAuth);
     }
+
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {

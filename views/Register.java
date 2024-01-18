@@ -1,6 +1,7 @@
 package views;
 
 import database.DatabaseConnection;
+import components.TopNavBar;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,11 +16,15 @@ public class Register extends JFrame implements ActionListener {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton registerButton;
+    private JPasswordField confirmPasswordField;
 
     public Register() {
         setTitle("User Registration");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        // adding the top navbar
+        TopNavBar topNavBar = new TopNavBar(this);
+        this.setJMenuBar(topNavBar);
 
         // Styling
         Font labelFont = new Font("Arial", Font.PLAIN, 24);
@@ -30,9 +35,10 @@ public class Register extends JFrame implements ActionListener {
         usernameField.setFont(inputFont);
         passwordField = new JPasswordField(20);
         passwordField.setFont(inputFont);
-        registerButton = new JButton("Register");
+        confirmPasswordField = new JPasswordField(20);
+        confirmPasswordField.setFont(inputFont);
+        registerButton = new JButton("Enregistrer");
         registerButton.setFont(inputFont);
-
         registerButton.addActionListener(this);
 
         JPanel formPanel = new JPanel();
@@ -40,7 +46,7 @@ public class Register extends JFrame implements ActionListener {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        JLabel usernameLabel = new JLabel("Username:");
+        JLabel usernameLabel = new JLabel("Nom d'utilisateur:");
         usernameLabel.setFont(labelFont);
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -49,7 +55,7 @@ public class Register extends JFrame implements ActionListener {
         gbc.gridx = 1;
         formPanel.add(usernameField, gbc);
 
-        JLabel passwordLabel = new JLabel("Password:");
+        JLabel passwordLabel = new JLabel("Mot de passe:");
         passwordLabel.setFont(labelFont);
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -58,8 +64,17 @@ public class Register extends JFrame implements ActionListener {
         gbc.gridx = 1;
         formPanel.add(passwordField, gbc);
 
+        JLabel confirmPasswordLabel = new JLabel("Confirmer le mot de passe:");
+        confirmPasswordLabel.setFont(labelFont);
         gbc.gridx = 0;
         gbc.gridy = 2;
+        formPanel.add(confirmPasswordLabel, gbc);
+
+        gbc.gridx = 1;
+        formPanel.add(confirmPasswordField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
         gbc.gridwidth = 2;
         formPanel.add(registerButton, gbc);
 
@@ -80,10 +95,19 @@ public class Register extends JFrame implements ActionListener {
     private void registerUser() {
         String username = usernameField.getText();
         char[] passwordChars = passwordField.getPassword();
+        char[] confirmPasswordChars = confirmPasswordField.getPassword();
         String password = new String(passwordChars);
+        String confirmPassword = new String(confirmPasswordChars);
 
-        if (username.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Username and password are required.", "Error", JOptionPane.ERROR_MESSAGE);
+        if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Tous les champs sont requis", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!password.equals(confirmPassword)) {
+            JOptionPane.showMessageDialog(this, "Les mots de passe ne correspondent pas.", "Error",
+                    JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -96,15 +120,16 @@ public class Register extends JFrame implements ActionListener {
                 int rowsAffected = preparedStatement.executeUpdate();
 
                 if (rowsAffected > 0) {
-                    JOptionPane.showMessageDialog(this, "User registered successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    dispose(); // Close the registration window after successful registration
+                    JOptionPane.showMessageDialog(this, "Vous êtes enregistré avec succès", "Success",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    dispose();
                 } else {
-                    JOptionPane.showMessageDialog(this, "Failed to register user.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Erreur lors de la création du compte", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error accessing the database.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Erreur de connexion à la base de données", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

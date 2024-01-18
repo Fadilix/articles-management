@@ -3,6 +3,9 @@ package views;
 import database.DatabaseConnection;
 
 import javax.swing.*;
+
+import components.TopNavBar;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +24,10 @@ public class Login extends JFrame implements ActionListener {
         setTitle("User Login");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        // adding the top navbar
+        TopNavBar topNavBar = new TopNavBar(this);
+        this.setJMenuBar(topNavBar);
 
         // Styling
         Font labelFont = new Font("Arial", Font.PLAIN, 24);

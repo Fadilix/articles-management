@@ -169,7 +169,8 @@ public class VendreArticle extends JFrame implements ActionListener {
             document.add(title);
 
             document.add(Chunk.NEWLINE); // Espacement
-            document.add(createReceiptLine("Client", String.valueOf("")));
+            document.add(createReceiptLine("Client", String.valueOf(clientField.getText())));
+            document.add(createInterLine());
             document.add(createReceiptLine("ID de l'article", String.valueOf(idArticle)));
             document.add(createInterLine());
             document.add(createReceiptLine("Libellé", libelle));
