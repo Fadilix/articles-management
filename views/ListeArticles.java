@@ -101,7 +101,7 @@ public class ListeArticles extends JFrame implements ActionListener {
         searchButton.setFont(new Font("Arial", Font.BOLD, 16));
 
         // bouton pour afficher la liste des produits sous le seuil approvisionnement
-        seuilApprovisionnementButton = new JButton("Articles < d'approvisionnement");
+        seuilApprovisionnementButton = new JButton("Articles sous seuil d'approvisionnement");
 
         // bouton d'approvisionnement
         approvisionnerButton = new JButton("Approvisionner");

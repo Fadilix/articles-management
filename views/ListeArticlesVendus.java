@@ -36,7 +36,7 @@ public class ListeArticlesVendus extends JFrame {
         modeleTableau.addColumn("Catégorie");
         modeleTableau.addColumn("Quantité Vendue");
         modeleTableau.addColumn("Prix Total");
-        modeleTableau.addColumn("Fournisseur");
+        modeleTableau.addColumn("Client");
 
         // Récupération des données depuis la base de données et ajout au modèle de tableau
         try {
@@ -52,7 +52,7 @@ public class ListeArticlesVendus extends JFrame {
                         resultSet.getString("designationCat"),
                         resultSet.getInt("quantiteVendu"),
                         resultSet.getDouble("prixTotal"),
-                        resultSet.getString("fournisseur")
+                        resultSet.getString("client")
                 };
                 modeleTableau.addRow(ligneDonnees);
             }
