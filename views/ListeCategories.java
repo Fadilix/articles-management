@@ -22,7 +22,7 @@ public class ListeCategories extends JFrame {
         Connection connection = databaseConnection.getConnection();
         // Configuration de la fenêtre
         this.setTitle("Liste des Catégories d'articles");
-        this.setSize(800, 600);
+        this.setSize(1920, 1080);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
            TopNavBar topNavBar = new TopNavBar(this);

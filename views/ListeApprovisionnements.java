@@ -20,16 +20,10 @@ public class ListeApprovisionnements extends JFrame {
         // Configuration de la fenêtre
         this.setTitle("Liste des Approvisionnements");
 
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice gd = ge.getDefaultScreenDevice();
-        Dimension screenSize = gd.getDefaultConfiguration().getBounds().getSize();
-
-        this.setSize(screenSize);
-        // Maximisez la fenêtre pour la mettre en plein écran
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
+        this.setSize(1920, 1080);
         // Quittez l'application lorsque la fenêtre est fermée
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
         TopNavBar topNavBar = new TopNavBar(this);
         this.setJMenuBar(topNavBar);
 

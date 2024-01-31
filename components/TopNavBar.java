@@ -1,6 +1,8 @@
 package components;
 
 import javax.swing.*;
+
+import java.awt.Dimension;
 import views.EnregistrementArticle;
 import views.ListeApprovisionnements;
 import views.ListeArticles;
@@ -31,6 +33,7 @@ public class TopNavBar extends JMenuBar {
         JMenuItem seuilApproItem = new JMenuItem("Articles sous seuil d'approvisionnement");
 
         // Menu authentification
+        setPreferredSize(new Dimension(getPreferredSize().width, 60)); // Set your desired height
 
 
         enregistrementItem.addActionListener(new ActionListener() {
@@ -117,7 +120,7 @@ public class TopNavBar extends JMenuBar {
         this.add(menuApprovisionnement);
 
         // the background
-        this.setBackground(new Color(47, 38, 38)); // #2F2626
+        this.setBackground(new Color(36, 41, 46)); // A dark bluish-gray
 
         JMenu menuAuth = new JMenu("Authentification");
         JMenuItem login = new JMenuItem("Login");
@@ -155,7 +158,7 @@ public class TopNavBar extends JMenuBar {
             JFrame frame = new JFrame("Your Application Name");
             new TopNavBar(frame);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(800, 600);
+            frame.setSize(1920, 1080);
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         });

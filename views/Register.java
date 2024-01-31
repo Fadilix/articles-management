@@ -1,9 +1,11 @@
 package views;
 
-import database.DatabaseConnection;
 import components.TopNavBar;
+import database.DatabaseConnection;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,29 +24,46 @@ public class Register extends JFrame implements ActionListener {
         setTitle("User Registration");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        // adding the top navbar
+
+        // Adding the top navbar
         TopNavBar topNavBar = new TopNavBar(this);
         this.setJMenuBar(topNavBar);
 
         // Styling
-        Font labelFont = new Font("Arial", Font.PLAIN, 24);
-        Font inputFont = new Font("Arial", Font.PLAIN, 20);
-        UIManager.put("OptionPane.messageFont", new Font("Arial", Font.PLAIN, 20));
+        Font labelFont = new Font("Manrope", Font.PLAIN, 24);
+        Font titleFont = new Font("Manrope", Font.BOLD, 28);
+        Font inputFont = new Font("Manrope", Font.PLAIN, 20);
+        UIManager.put("OptionPane.messageFont", new Font("Manrope", Font.PLAIN, 20));
+
+        // Form Panel with Border and Background Color
+        JPanel formPanel = new JPanel();
+        formPanel.setLayout(new GridBagLayout());
+        formPanel.setBackground(new Color(240, 240, 240)); // Light Gray Background
+        formPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(0, 102, 204), 2, true), "Inscription", TitledBorder.CENTER, TitledBorder.TOP, titleFont, new Color(0, 102, 204)));
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(15, 15, 15, 15);
 
         usernameField = new JTextField(20);
         usernameField.setFont(inputFont);
+        usernameField.setBorder(BorderFactory.createLineBorder(new Color(0, 102, 204), 1, true)); // Subtle Border
+        usernameField.setBackground(new Color(255, 255, 255)); // White Background
+
         passwordField = new JPasswordField(20);
         passwordField.setFont(inputFont);
+        passwordField.setBorder(BorderFactory.createLineBorder(new Color(0, 102, 204), 1, true)); // Subtle Border
+        passwordField.setBackground(new Color(255, 255, 255)); // White Background
+
         confirmPasswordField = new JPasswordField(20);
         confirmPasswordField.setFont(inputFont);
+        confirmPasswordField.setBorder(BorderFactory.createLineBorder(new Color(0, 102, 204), 1, true)); // Subtle Border
+        confirmPasswordField.setBackground(new Color(255, 255, 255)); // White Background
+
         registerButton = new JButton("Enregistrer");
         registerButton.setFont(inputFont);
-        registerButton.addActionListener(this);
-
-        JPanel formPanel = new JPanel();
-        formPanel.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
+        registerButton.setForeground(Color.WHITE);
+        registerButton.setBackground(new Color(0, 102, 204));
+        registerButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // Padding
 
         JLabel usernameLabel = new JLabel("Nom d'utilisateur:");
         usernameLabel.setFont(labelFont);

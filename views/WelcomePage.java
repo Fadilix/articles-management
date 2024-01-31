@@ -16,7 +16,7 @@ public class WelcomePage extends JFrame {
         this.setJMenuBar(topNavBar);
 
         this.setTitle("Welcome");
-        this.setSize(600, 400);
+        this.setSize(1920, 1080);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // Creating components
