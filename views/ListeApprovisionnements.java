@@ -89,7 +89,7 @@ public class ListeApprovisionnements extends JFrame {
         // Set header style
         JTableHeader tableHeader = tableApprovisionnements.getTableHeader();
         tableHeader.setFont(new Font("Manrope", Font.BOLD, 16));
-        tableHeader.setBackground(new Color(0, 102, 204));
+        tableHeader.setBackground(new Color(44, 62, 80)); // Header Background color
         tableHeader.setForeground(Color.WHITE);
 
         // Set alternating row colors

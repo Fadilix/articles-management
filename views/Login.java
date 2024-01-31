@@ -10,13 +10,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.awt.FontFormatException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import components.NavBarAuth;
 import components.TopNavBar;
 import database.DatabaseConnection;
 
@@ -30,10 +30,11 @@ public class Login extends JFrame implements ActionListener {
         setTitle("User Login");
         setSize(1920, 1080);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         // Adding the top navbar
-        TopNavBar topNavBar = new TopNavBar(this);
-        this.setJMenuBar(topNavBar);
+        NavBarAuth navBarAuth = new NavBarAuth(this);
+        this.setJMenuBar(navBarAuth);
 
         try {
             // Load the custom font
@@ -62,7 +63,8 @@ public class Login extends JFrame implements ActionListener {
         JPanel formPanel = new JPanel();
         formPanel.setLayout(new GridBagLayout());
         formPanel.setBackground(new Color(240, 240, 240)); // Light Gray Background
-        formPanel.setBorder(BorderFactory.createTitledBorder(new LineBorder(new Color(0, 102, 204), 2, true), "Connection", TitledBorder.CENTER, TitledBorder.TOP, titleFont, new Color(0, 102, 204)));
+        formPanel.setBorder(BorderFactory.createTitledBorder(new LineBorder(new Color(0, 102, 204), 2, true),
+                "Connection", TitledBorder.CENTER, TitledBorder.TOP, titleFont, new Color(0, 102, 204)));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(15, 15, 15, 15);

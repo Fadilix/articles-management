@@ -165,7 +165,7 @@ public class EnregistrementArticle extends JFrame {
         try (Connection connection = new DatabaseConnection().getConnection()) {
             String sql = "SELECT designation FROM categorie";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql);
-                 ResultSet resultSet = preparedStatement.executeQuery()) {
+                    ResultSet resultSet = preparedStatement.executeQuery()) {
 
                 List<String> categories = new ArrayList<>();
                 while (resultSet.next()) {
@@ -193,6 +193,12 @@ public class EnregistrementArticle extends JFrame {
             try {
                 Double.parseDouble(prix.getText());
                 Integer.parseInt(quantiteSeuil.getText());
+                double prixValue = Double.parseDouble(prix.getText());
+                int quantiteSeuilValue = Integer.parseInt(quantiteSeuil.getText());
+                if (prixValue < 1 || quantiteSeuilValue < 1) {
+                    JOptionPane.showMessageDialog(this, "Le prix et quantite doivent être supérieur ou égaux à 1");
+                    return;
+                }
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this,
                         "Les champs 'Prix' et 'Quantité seuil' doivent être des nombres valides.", "Erreur",
@@ -218,6 +224,7 @@ public class EnregistrementArticle extends JFrame {
                     if (rowsInserted > 0) {
                         JOptionPane.showMessageDialog(this, "L'enregistrement a été inséré avec succès !", "Succès",
                                 JOptionPane.INFORMATION_MESSAGE);
+                        this.dispose();
                     } else {
                         JOptionPane.showMessageDialog(this, "Erreur lors de l'insertion de l'enregistrement.", "Erreur",
                                 JOptionPane.ERROR_MESSAGE);

@@ -56,7 +56,8 @@ public class ListeArticlesVendus extends JFrame {
         modeleTableau.addColumn("Prix Total");
         modeleTableau.addColumn("Client");
 
-        // Récupération des données depuis la base de données et ajout au modèle de tableau
+        // Récupération des données depuis la base de données et ajout au modèle de
+        // tableau
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM articlevendu");
@@ -94,8 +95,10 @@ public class ListeArticlesVendus extends JFrame {
         // Set alternate row colors
         tableArticlesVendus.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Component rendererComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                    boolean hasFocus, int row, int column) {
+                Component rendererComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus,
+                        row, column);
                 if (!isSelected) {
                     rendererComponent.setBackground(row % 2 == 0 ? Color.WHITE : new Color(240, 240, 240));
                 }
@@ -105,7 +108,7 @@ public class ListeArticlesVendus extends JFrame {
 
         JTableHeader tableHeader = tableArticlesVendus.getTableHeader();
         tableHeader.setFont(new Font("Manrope", Font.BOLD, 16));
-        tableHeader.setBackground(new Color(0, 102, 204));
+        tableHeader.setBackground(new Color(44, 62, 80)); // Header Background color
         tableHeader.setForeground(Color.WHITE);
 
         // Définition de la hauteur des lignes pour augmenter la taille des éléments

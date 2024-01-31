@@ -9,6 +9,9 @@ import components.TopNavBar;
 import database.DatabaseConnection;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,8 +33,15 @@ public class VendreArticle extends JFrame implements ActionListener {
     public VendreArticle(int idArticle) {
         this.idArticle = idArticle;
 
-        this.setTitle("Vendre Article");
-        this.setSize(400, 200);
+        this.setTitle("Vente d'Article");
+        this.setFont(new Font("Segoe UI", Font.PLAIN, 24)); // Change font and increase size
+
+        // Make the screen size take the whole screen
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+        // Set a preferred size for the frame
+        this.setPreferredSize(new Dimension(800, 600));
+
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         TopNavBar topNavBar = new TopNavBar(this);
         this.setJMenuBar(topNavBar);
@@ -41,18 +51,57 @@ public class VendreArticle extends JFrame implements ActionListener {
         clientField = new JTextField(10);
         vendreButton = new JButton("Vendre");
 
+        // Set a preferred size for the text fields
+        quantiteField.setPreferredSize(new Dimension(200, 30));
+        clientField.setPreferredSize(new Dimension(200, 30));
+
         // Ajout des écouteurs d'événements
         vendreButton.addActionListener(this);
 
-        // Création du formulaire
-        JPanel formPanel = new JPanel();
-        formPanel.setLayout(new GridLayout(3, 2));
-        formPanel.add(new JLabel("Quantité :"));
-        formPanel.add(quantiteField);
-        formPanel.add(new JLabel("Client :"));
-        formPanel.add(clientField);
-        formPanel.add(new JLabel("")); // espace vide
-        formPanel.add(vendreButton);
+        // Création du formulaire avec une bordure et style
+        JPanel formPanel = new JPanel(new GridBagLayout());
+        Border border = BorderFactory.createLineBorder(new Color(0, 102, 204), 2); // Border color
+        formPanel.setBorder(BorderFactory.createTitledBorder(border, "Vente d'Article",
+                TitledBorder.CENTER, TitledBorder.TOP, new Font("Segoe UI", Font.BOLD, 24), Color.BLACK));
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+
+        // Add components to the formPanel with GridBagConstraints
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        formPanel.add(new JLabel("Quantité :"), gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        formPanel.add(quantiteField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        formPanel.add(new JLabel("Client :"), gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        formPanel.add(clientField, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        formPanel.add(vendreButton, gbc);
+
+        // Make elements fit the screen
+        Font labelFont = new Font("Segoe UI", Font.PLAIN, 20); // Change font
+        Font fieldFont = new Font("Segoe UI", Font.PLAIN, 20);
+        Font buttonFont = new Font("Segoe UI", Font.PLAIN, 20);
+
+        for (Component component : formPanel.getComponents()) {
+            if (component instanceof JLabel) {
+                ((JLabel) component).setFont(labelFont);
+            } else if (component instanceof JTextField) {
+                ((JTextField) component).setFont(fieldFont);
+            } else if (component instanceof JButton) {
+                ((JButton) component).setFont(buttonFont);
+            }
+        }
 
         // Ajout du formulaire à la fenêtre
         this.add(formPanel);
@@ -95,6 +144,12 @@ public class VendreArticle extends JFrame implements ActionListener {
     private void vendreArticle() {
         try {
             int quantiteVendue = Integer.parseInt(quantiteField.getText());
+
+            if (quantiteVendue < 1) {
+                JOptionPane.showMessageDialog(this, "La quantité doit être positive");
+                return;
+            }
+
             String client = clientField.getText();
             double prixUnitaire = getPrixUnitaire(idArticle);
             double prixTotal = quantiteVendue * prixUnitaire;
@@ -138,7 +193,7 @@ public class VendreArticle extends JFrame implements ActionListener {
                 // Fermeture de la fenêtre après la vente
                 this.dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "La quantite en stock n'est pas suffisante");
+                JOptionPane.showMessageDialog(this, "La quantité en stock n'est pas suffisante");
             }
 
         } catch (NumberFormatException | SQLException ex) {

@@ -66,8 +66,8 @@ public class ListeCategories extends JFrame {
 
         // Création du JTable avec le modèle de tableau rempli
         tableCategories = new JTable(modeleTableau);
-        tableCategories.setFont(new Font("YourCustomFont", Font.PLAIN, 16)); // Set font size
-        tableCategories.setRowHeight(30);
+        tableCategories.setFont(new Font("Manrope", Font.PLAIN, 16)); // Set font size
+        tableCategories.setRowHeight(40);
         tableCategories.setFont(new Font("Manrope", Font.PLAIN, 16)); // Set font size
 
         // Styles for the table
@@ -77,7 +77,7 @@ public class ListeCategories extends JFrame {
 
         JTableHeader tableHeader = tableCategories.getTableHeader();
         tableHeader.setFont(new Font("YourCustomFont", Font.BOLD, 16));
-        tableHeader.setBackground(new Color(0, 102, 204));
+        tableHeader.setBackground(new Color(44, 62, 80)); // Header Background color
         tableHeader.setForeground(Color.WHITE);
 
         // Ajout du tableau à un JScrollPane pour permettre le défilement

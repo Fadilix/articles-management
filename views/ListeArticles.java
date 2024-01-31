@@ -38,7 +38,8 @@ public class ListeArticles extends JFrame implements ActionListener {
 
         try {
             // Load the custom font
-            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("C:\\Users\\MSI Stealth\\Documents\\Coding\\Java\\vente_articles\\fonts\\Manrope-Regular.ttf"));
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File(
+                    "C:\\Users\\MSI Stealth\\Documents\\Coding\\Java\\vente_articles\\fonts\\Manrope-Regular.ttf"));
 
             // Register the custom font with the UIManager
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -75,13 +76,16 @@ public class ListeArticles extends JFrame implements ActionListener {
         tableModel.addColumn("ID");
         tableModel.addColumn("Libellé");
         tableModel.addColumn("Prix");
-        tableModel.addColumn("Quantité en Stock");
+        tableModel.addColumn("Quantité en stock");
+        tableModel.addColumn("Quantité seuil");
         tableModel.addColumn("Désignation catégorie");
 
         // Retrieve data from the database
         try {
             Statement statement = connexion.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT idArticle, libel, prix, quantiteEnStock, designationCat FROM article");
+            ResultSet resultSet = statement
+                    .executeQuery(
+                            "SELECT idArticle, libel, prix, quantiteEnStock, quantiteSeuil, designationCat FROM article");
 
             while (resultSet.next()) {
                 Object[] rowData = {
@@ -89,6 +93,7 @@ public class ListeArticles extends JFrame implements ActionListener {
                         resultSet.getString("libel"),
                         resultSet.getDouble("prix"),
                         resultSet.getInt("quantiteEnStock"),
+                        resultSet.getInt("quantiteSeuil"),
                         resultSet.getString("designationCat"),
                 };
                 tableModel.addRow(rowData);
@@ -115,7 +120,7 @@ public class ListeArticles extends JFrame implements ActionListener {
             final Color color2 = new Color(255, 255, 255);
 
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-                                                           boolean hasFocus, int row, int column) {
+                    boolean hasFocus, int row, int column) {
                 Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 if (!isSelected) {
                     comp.setBackground(row % 2 == 0 ? color1 : color2);
@@ -289,6 +294,7 @@ public class ListeArticles extends JFrame implements ActionListener {
 
         if (e.getSource() == seuilApprovisionnementButton) {
             new ListeArticlesSousSeuilAppro();
+            this.dispose();
         }
 
         if (e.getSource() == approvisionnerButton) {
@@ -336,7 +342,7 @@ public class ListeArticles extends JFrame implements ActionListener {
 
             DatabaseConnection databaseConnection = new DatabaseConnection();
             Connection connection = databaseConnection.getConnection();
-            String query = "SELECT idArticle, libel, prix, quantiteEnStock, designationCat FROM article WHERE libel LIKE ?";
+            String query = "SELECT idArticle, libel, prix, quantiteEnStock, quantiteSeuil, designationCat FROM article WHERE libel LIKE ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, "%" + searchTerm + "%");
                 ResultSet resultSet = preparedStatement.executeQuery();
@@ -347,6 +353,7 @@ public class ListeArticles extends JFrame implements ActionListener {
                             resultSet.getString("libel"),
                             resultSet.getDouble("prix"),
                             resultSet.getInt("quantiteEnStock"),
+                            resultSet.getInt("quantiteSeuil"),
                             resultSet.getString("designationCat"),
                     };
                     model.addRow(rowData);

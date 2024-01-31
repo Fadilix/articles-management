@@ -8,7 +8,6 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.awt.FontFormatException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -26,6 +25,8 @@ public class ListeArticlesSousSeuilAppro extends JFrame {
         Connection connection = databaseConnection.getConnection();
         this.setTitle("Liste des Articles sous le seuil d'approvisionnement");
         this.setSize(1920, 1080);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         TopNavBar topNavBar = new TopNavBar(this);
         topNavBar.setFont(new Font("Manrope", Font.PLAIN, 16));
@@ -97,7 +98,7 @@ public class ListeArticlesSousSeuilAppro extends JFrame {
             final Color color2 = new Color(255, 255, 255);
 
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-                                                           boolean hasFocus, int row, int column) {
+                    boolean hasFocus, int row, int column) {
                 Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 if (!isSelected) {
                     comp.setBackground(row % 2 == 0 ? color1 : color2);

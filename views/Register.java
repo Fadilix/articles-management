@@ -1,5 +1,6 @@
 package views;
 
+import components.NavBarAuth;
 import components.TopNavBar;
 import database.DatabaseConnection;
 
@@ -26,9 +27,9 @@ public class Register extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // Adding the top navbar
-        TopNavBar topNavBar = new TopNavBar(this);
-        this.setJMenuBar(topNavBar);
-
+        NavBarAuth navBarAuth = new NavBarAuth(this);
+        this.setJMenuBar(navBarAuth);
+        
         // Styling
         Font labelFont = new Font("Manrope", Font.PLAIN, 24);
         Font titleFont = new Font("Manrope", Font.BOLD, 28);
@@ -39,7 +40,9 @@ public class Register extends JFrame implements ActionListener {
         JPanel formPanel = new JPanel();
         formPanel.setLayout(new GridBagLayout());
         formPanel.setBackground(new Color(240, 240, 240)); // Light Gray Background
-        formPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(0, 102, 204), 2, true), "Inscription", TitledBorder.CENTER, TitledBorder.TOP, titleFont, new Color(0, 102, 204)));
+        formPanel.setBorder(
+                BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(0, 102, 204), 2, true),
+                        "Inscription", TitledBorder.CENTER, TitledBorder.TOP, titleFont, new Color(0, 102, 204)));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(15, 15, 15, 15);
@@ -56,7 +59,8 @@ public class Register extends JFrame implements ActionListener {
 
         confirmPasswordField = new JPasswordField(20);
         confirmPasswordField.setFont(inputFont);
-        confirmPasswordField.setBorder(BorderFactory.createLineBorder(new Color(0, 102, 204), 1, true)); // Subtle Border
+        confirmPasswordField.setBorder(BorderFactory.createLineBorder(new Color(0, 102, 204), 1, true)); // Subtle
+                                                                                                         // Border
         confirmPasswordField.setBackground(new Color(255, 255, 255)); // White Background
 
         registerButton = new JButton("Enregistrer");
@@ -143,12 +147,14 @@ public class Register extends JFrame implements ActionListener {
                             JOptionPane.INFORMATION_MESSAGE);
                     dispose();
                 } else {
-                    JOptionPane.showMessageDialog(this, "Erreur lors de la création du compte", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Erreur lors de la création du compte", "Error",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Erreur de connexion à la base de données", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Erreur de connexion à la base de données", "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
