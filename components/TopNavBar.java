@@ -135,25 +135,25 @@ public class TopNavBar extends JMenuBar {
         this.setBackground(new Color(36, 41, 46)); // A dark bluish-gray
 
         JMenu menuAuth = new JMenu("Authentification");
-        JMenuItem login = new JMenuItem("Login");
-        JMenuItem inscription = new JMenuItem("Inscription");
+        // JMenuItem login = new JMenuItem("Login");
+        // JMenuItem inscription = new JMenuItem("Inscription");
         JMenuItem deconnection = new JMenuItem("Deconnection");
 
-        login.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new Login();
-                parentFrame.dispose();
-            }
-        });
+        // login.addActionListener(new ActionListener() {
+        //     @Override
+        //     public void actionPerformed(ActionEvent e) {
+        //         new Login();
+        //         parentFrame.dispose();
+        //     }
+        // });
 
-        inscription.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new Register();
-                parentFrame.dispose();
-            }
-        });
+        // inscription.addActionListener(new ActionListener() {
+        //     @Override
+        //     public void actionPerformed(ActionEvent e) {
+        //         new Register();
+        //         parentFrame.dispose();
+        //     }
+        // });
 
 
         deconnection.addActionListener(new ActionListener() {
@@ -164,8 +164,8 @@ public class TopNavBar extends JMenuBar {
             }
         });
 
-        menuAuth.add(login);
-        menuAuth.add(inscription);
+        // menuAuth.add(login);
+        // menuAuth.add(inscription);
         menuAuth.setForeground(Color.WHITE);
         this.add(menuAuth);
     }
