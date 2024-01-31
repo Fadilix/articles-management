@@ -28,6 +28,7 @@ public class ListeArticlesSousSeuilAppro extends JFrame {
         this.setSize(1920, 1080);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         TopNavBar topNavBar = new TopNavBar(this);
+        topNavBar.setFont(new Font("Manrope", Font.PLAIN, 16));
         this.setJMenuBar(topNavBar);
 
         try {
