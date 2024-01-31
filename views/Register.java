@@ -22,7 +22,7 @@ public class Register extends JFrame implements ActionListener {
 
     public Register() {
         setTitle("User Registration");
-        setSize(800, 600);
+        setSize(1920, 1080);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // Adding the top navbar

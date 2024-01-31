@@ -3,17 +3,22 @@ package views;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-
-import components.TopNavBar;
-import database.DatabaseConnection;
+import javax.swing.plaf.FontUIResource;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.awt.FontFormatException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import components.TopNavBar;
+import database.DatabaseConnection;
 
 public class Login extends JFrame implements ActionListener {
 
@@ -23,12 +28,29 @@ public class Login extends JFrame implements ActionListener {
 
     public Login() {
         setTitle("User Login");
-        setSize(800, 600);
+        setSize(1920, 1080);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // Adding the top navbar
         TopNavBar topNavBar = new TopNavBar(this);
         this.setJMenuBar(topNavBar);
+
+        try {
+            // Load the custom font
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File(
+                    "C:\\Users\\MSI Stealth\\Documents\\Coding\\Java\\vente_articles\\fonts\\Manrope-Regular.ttf"));
+
+            // Register the custom font with the UIManager
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(customFont);
+
+            // Apply the custom font to all Swing components
+            setUIFont(new FontUIResource(customFont.deriveFont(Font.PLAIN, 16)));
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(this, "Font file not found.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException | FontFormatException e) {
+            JOptionPane.showMessageDialog(this, "Error loading font.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
 
         // Styling
         Font labelFont = new Font("Manrope", Font.PLAIN, 24);
@@ -60,6 +82,7 @@ public class Login extends JFrame implements ActionListener {
         loginButton.setForeground(Color.WHITE);
         loginButton.setBackground(new Color(0, 102, 204));
         loginButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // Padding
+        loginButton.addActionListener(this);
 
         JLabel usernameLabel = new JLabel("Nom d'utilisateur:");
         usernameLabel.setFont(labelFont);
@@ -137,5 +160,40 @@ public class Login extends JFrame implements ActionListener {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new Login());
+    }
+
+    // Method to set the font for all Swing components
+    private static void setUIFont(FontUIResource fontUIResource) {
+        UIManager.put("Button.font", fontUIResource);
+        UIManager.put("ToggleButton.font", fontUIResource);
+        UIManager.put("RadioButton.font", fontUIResource);
+        UIManager.put("CheckBox.font", fontUIResource);
+        UIManager.put("ColorChooser.font", fontUIResource);
+        UIManager.put("ComboBox.font", fontUIResource);
+        UIManager.put("Label.font", fontUIResource);
+        UIManager.put("List.font", fontUIResource);
+        UIManager.put("MenuBar.font", fontUIResource);
+        UIManager.put("MenuItem.font", fontUIResource);
+        UIManager.put("RadioButtonMenuItem.font", fontUIResource);
+        UIManager.put("CheckBoxMenuItem.font", fontUIResource);
+        UIManager.put("Menu.font", fontUIResource);
+        UIManager.put("PopupMenu.font", fontUIResource);
+        UIManager.put("OptionPane.font", fontUIResource);
+        UIManager.put("Panel.font", fontUIResource);
+        UIManager.put("ProgressBar.font", fontUIResource);
+        UIManager.put("ScrollPane.font", fontUIResource);
+        UIManager.put("Viewport.font", fontUIResource);
+        UIManager.put("TabbedPane.font", fontUIResource);
+        UIManager.put("Table.font", fontUIResource);
+        UIManager.put("TableHeader.font", fontUIResource);
+        UIManager.put("TextField.font", fontUIResource);
+        UIManager.put("PasswordField.font", fontUIResource);
+        UIManager.put("TextArea.font", fontUIResource);
+        UIManager.put("TextPane.font", fontUIResource);
+        UIManager.put("EditorPane.font", fontUIResource);
+        UIManager.put("TitledBorder.font", fontUIResource);
+        UIManager.put("ToolBar.font", fontUIResource);
+        UIManager.put("ToolTip.font", fontUIResource);
+        UIManager.put("Tree.font", fontUIResource);
     }
 }

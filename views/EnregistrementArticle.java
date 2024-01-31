@@ -2,11 +2,11 @@ package views;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-
+import javax.swing.plaf.FontUIResource;
 import components.TopNavBar;
 import database.DatabaseConnection;
-
 import java.awt.*;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,18 +30,33 @@ public class EnregistrementArticle extends JFrame {
         TopNavBar topNavBar = new TopNavBar(this);
         this.setJMenuBar(topNavBar);
 
+        try {
+            // Load the custom font
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File(
+                    "C:\\Users\\MSI Stealth\\Documents\\Coding\\Java\\vente_articles\\fonts\\Manrope-Regular.ttf"));
+
+            // Register the custom font with the UIManager
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(customFont);
+
+            // Apply the custom font to all Swing components
+            setUIFont(new FontUIResource(customFont.deriveFont(Font.PLAIN, 16)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
                 "Enregistrement d'un Nouvel Article", TitledBorder.CENTER, TitledBorder.TOP,
-                new Font("Arial", Font.BOLD, 20)));
+                new Font("Manrope", Font.BOLD, 20)));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.insets = new Insets(5, 5, 10, 5);
+        gbc.insets = new Insets(10, 10, 20, 10);
 
-        Font labelFont = new Font("Arial", Font.BOLD, 16);
-        Font inputFont = new Font("Arial", Font.PLAIN, 14);
+        Font labelFont = new Font("Manrope", Font.BOLD, 16);
+        Font inputFont = new Font("Manrope", Font.PLAIN, 14);
 
         gbc.gridx = 0;
         gbc.gridy++;
@@ -95,6 +110,8 @@ public class EnregistrementArticle extends JFrame {
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         addCategoryButton.setFont(inputFont);
+        addCategoryButton.setBackground(new Color(52, 152, 219)); // Background color
+        addCategoryButton.setForeground(Color.WHITE); // Text color
         panel.add(addCategoryButton, gbc);
 
         gbc.gridx = 0;
@@ -102,7 +119,12 @@ public class EnregistrementArticle extends JFrame {
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         boutonValider.setFont(inputFont);
+        boutonValider.setBackground(new Color(46, 204, 113)); // Background color
+        boutonValider.setForeground(Color.WHITE); // Text color
         panel.add(boutonValider, gbc);
+
+        // Set panel background color
+        panel.setBackground(new Color(241, 243, 244));
 
         this.add(panel);
         this.setTitle("Enregistrement d'Article");
@@ -207,6 +229,20 @@ public class EnregistrementArticle extends JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    // Method to set the font for all Swing components
+    private static void setUIFont(FontUIResource fontUIResource) {
+        UIManager.put("Button.font", fontUIResource);
+        UIManager.put("ToggleButton.font", fontUIResource);
+        UIManager.put("RadioButton.font", fontUIResource);
+        UIManager.put("CheckBox.font", fontUIResource);
+        UIManager.put("Menu.font", fontUIResource);
+        UIManager.put("MenuItem.font", fontUIResource);
+        UIManager.put("MenuBar.font", fontUIResource);
+        UIManager.put("PopupMenu.font", fontUIResource);
+        UIManager.put("OptionPane.messageFont", fontUIResource);
+        // ... (add more components as needed)
     }
 
     public static void main(String[] args) {
