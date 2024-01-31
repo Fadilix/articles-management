@@ -40,7 +40,7 @@ public class NavBarAuth extends JMenuBar {
         JMenu menuAuth = new JMenu("Authentification");
         JMenuItem login = new JMenuItem("Login");
         JMenuItem inscription = new JMenuItem("Inscription");
-        JMenuItem deconnection = new JMenuItem("Deconnection");
+        // JMenuItem deconnection = new JMenuItem("Deconnection");
 
         login.addActionListener(new ActionListener() {
             @Override
@@ -58,17 +58,17 @@ public class NavBarAuth extends JMenuBar {
             }
         });
 
-        deconnection.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new Login();
-                parentFrame.dispose();
-            }
-        });
+        // deconnection.addActionListener(new ActionListener() {
+        //     @Override
+        //     public void actionPerformed(ActionEvent e) {
+        //         new Login();
+        //         parentFrame.dispose();
+        //     }
+        // });
 
         menuAuth.add(login);
         menuAuth.add(inscription);
-        menuAuth.add(deconnection);
+        // menuAuth.add(deconnection);
         menuAuth.setForeground(Color.WHITE);
         this.add(menuAuth);
     }
