@@ -38,7 +38,7 @@ public class VendreArticle extends JFrame implements ActionListener {
         this.setTitle("Vente d'Article");
         this.setFont(new Font("Courier", Font.PLAIN, 24));
 
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        // Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setPreferredSize(new Dimension(800, 600));
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 

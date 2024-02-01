@@ -17,7 +17,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import components.NavBarAuth;
-import components.TopNavBar;
 import database.DatabaseConnection;
 
 public class Login extends JFrame implements ActionListener {

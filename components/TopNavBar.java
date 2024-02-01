@@ -138,6 +138,7 @@ public class TopNavBar extends JMenuBar {
         // JMenuItem login = new JMenuItem("Login");
         // JMenuItem inscription = new JMenuItem("Inscription");
         JMenuItem deconnection = new JMenuItem("Deconnection");
+        menuAuth.add(deconnection);
 
         // login.addActionListener(new ActionListener() {
         //     @Override
@@ -160,6 +161,7 @@ public class TopNavBar extends JMenuBar {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO Auto-generated method stub
+                parentFrame.dispose();
                 new Login();
             }
         });

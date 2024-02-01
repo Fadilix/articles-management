@@ -1,7 +1,6 @@
 package views;
 
 import components.NavBarAuth;
-import components.TopNavBar;
 import database.DatabaseConnection;
 
 import javax.swing.*;
