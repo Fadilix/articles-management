@@ -123,7 +123,15 @@ public class ListeArticles extends JFrame implements ActionListener {
                     boolean hasFocus, int row, int column) {
                 Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 if (!isSelected) {
-                    comp.setBackground(row % 2 == 0 ? color1 : color2);
+                    int quantiteEnStock = (int) table.getModel().getValueAt(row, 3);
+                    int quantiteSeuil = (int) table.getModel().getValueAt(row, 4);
+
+                    // Check if the stock quantity is below the threshold
+                    if (quantiteEnStock < quantiteSeuil) {
+                        comp.setBackground(new Color(255, 204, 204)); // Set background color to light red
+                    } else {
+                        comp.setBackground(row % 2 == 0 ? color1 : color2);
+                    }
                 }
                 return comp;
             }
@@ -197,12 +205,30 @@ public class ListeArticles extends JFrame implements ActionListener {
         searchButton.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         sidebarPanel.add(searchButton);
 
+        JButton infoButton = new JButton("Info!");
+        infoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Message d'information pour le tutoriel
+                String tutorialMessage = "Bienvenue dans le tutoriel!\n\n"
+                        + "1. À gauche, le sidebar vous permet d'accéder à diverses fonctionnalités.\n"
+                        + "2. Avant de supprimer, modifier, approvisionner ou vendre, veuillez sélectionner l'élément souhaité en cliquant sur une ligne du tableau, puis appuyez sur le bouton correspondant.\n"
+                        + "3. Utilisez le champ de saisie blanc pour rechercher un article. Saisissez le nom de l'article que vous souhaitez rechercher et appuyez sur le bouton 'Rechercher'.\n"
+                        + "4. La barre de navigation (navbar) offre également des fonctionnalités supplémentaires. Explorez les différentes options disponibles.";
+
+                // Afficher une boîte de dialogue avec le message d'information
+                JOptionPane.showMessageDialog(ListeArticles.this, tutorialMessage, "Tutoriel",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
         addSidebarButton(sidebarPanel, "Rechercher", searchButton, SwingConstants.LEFT);
         addSidebarButton(sidebarPanel, "Modifier", modifierButton, SwingConstants.LEFT);
         addSidebarButton(sidebarPanel, "Supprimer", supprimerButton, SwingConstants.LEFT);
         addSidebarButton(sidebarPanel, "Articles sous seuil", seuilApprovisionnementButton, SwingConstants.LEFT);
         addSidebarButton(sidebarPanel, "Approvisionner", approvisionnerButton, SwingConstants.LEFT);
         addSidebarButton(sidebarPanel, "Vendre article", vendreArticleButton, SwingConstants.LEFT);
+        addSidebarButton(sidebarPanel, "Aide !", infoButton, SwingConstants.LEFT);
 
         contentPanel.add(sidebarPanel, BorderLayout.WEST);
         contentPanel.add(scrollPane, BorderLayout.CENTER);

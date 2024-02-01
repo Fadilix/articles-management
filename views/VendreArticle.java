@@ -190,6 +190,7 @@ public class VendreArticle extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(this, "L'article a été vendu avec succès. Le reçu a été généré.",
                         "Vente réussie", JOptionPane.INFORMATION_MESSAGE);
 
+                new ListeArticles();
                 // Fermeture de la fenêtre après la vente
                 this.dispose();
             } else {
