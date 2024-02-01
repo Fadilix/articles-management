@@ -239,7 +239,7 @@ public class VendreArticle extends JFrame implements ActionListener {
             document.add(createReceiptLine("Prix total", "$" + prixTotal));
             document.add(createInterLine());
 
-            document.add(createReceiptLine("Date de vente", getCurrentDate().toString()));
+            document.add(createReceiptLine("Date de vente", getCurrentTimestamp().toString()));
             document.add(createInterLine());
 
             document.add(createReceiptLine("Merci pour votre achat!", ""));
@@ -333,6 +333,12 @@ public class VendreArticle extends JFrame implements ActionListener {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String dateStr = sdf.format(new Date());
         return java.sql.Date.valueOf(dateStr);
+    }
+
+    private java.sql.Timestamp getCurrentTimestamp() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String timestampStr = sdf.format(new Date());
+        return java.sql.Timestamp.valueOf(timestampStr);
     }
 
     public static void main(String[] args) {
