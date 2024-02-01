@@ -205,19 +205,20 @@ public class ListeArticles extends JFrame implements ActionListener {
         searchButton.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         sidebarPanel.add(searchButton);
 
-        JButton infoButton = new JButton("Info!");
+        JButton infoButton = new JButton("Aide!");
         infoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Message d'information pour le tutoriel
                 String tutorialMessage = "Bienvenue dans le tutoriel!\n\n"
-                        + "1. À gauche, le sidebar vous permet d'accéder à diverses fonctionnalités.\n"
-                        + "2. Avant de supprimer, modifier, approvisionner ou vendre, veuillez sélectionner l'élément souhaité en cliquant sur une ligne du tableau, puis appuyez sur le bouton correspondant.\n"
-                        + "3. Utilisez le champ de saisie blanc pour rechercher un article. Saisissez le nom de l'article que vous souhaitez rechercher et appuyez sur le bouton 'Rechercher'.\n"
-                        + "4. La barre de navigation (navbar) offre également des fonctionnalités supplémentaires. Explorez les différentes options disponibles.";
+                        + "1. Sur la gauche, le sidebar offre diverses fonctionnalités pour faciliter la gestion des articles.\n\n"
+                        + "2. Avant d'effectuer des actions telles que la suppression, la modification, l'approvisionnement ou la \nvente, assurez-vous de sélectionner l'élément souhaité en cliquant sur une ligne du tableau. Ensuite, appuyez sur le bouton correspondant.\n\n"
+                        + "3. Utilisez le champ de saisie pour rechercher un article. Saisissez le nom de l'article désiré et appuyez\nsur le bouton 'Rechercher'.\n\n"
+                        + "4. Lorsqu'une ligne est signalée en rouge, cela indique qu'il est nécessaire d'approvisionner l'article en\nquestion. Cela peut être effectué en sélectionnant l'article et en utilisant l'option d'approvisionnement dans le sidebar.\n\n"
+                        + "5. Explorez également les fonctionnalités supplémentaires offertes par la barre de navigation (navbar).";
 
                 // Afficher une boîte de dialogue avec le message d'information
-                JOptionPane.showMessageDialog(ListeArticles.this, tutorialMessage, "Tutoriel",
+                JOptionPane.showMessageDialog(ListeArticles.this, tutorialMessage, "Tutorial",
                         JOptionPane.INFORMATION_MESSAGE);
             }
         });

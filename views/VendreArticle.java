@@ -15,7 +15,9 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -34,40 +36,32 @@ public class VendreArticle extends JFrame implements ActionListener {
         this.idArticle = idArticle;
 
         this.setTitle("Vente d'Article");
-        this.setFont(new Font("Segoe UI", Font.PLAIN, 24)); // Change font and increase size
+        this.setFont(new Font("Courier", Font.PLAIN, 24));
 
-        // Make the screen size take the whole screen
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
-        // Set a preferred size for the frame
         this.setPreferredSize(new Dimension(800, 600));
-
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
         TopNavBar topNavBar = new TopNavBar(this);
         this.setJMenuBar(topNavBar);
 
-        // Création des composants
         quantiteField = new JTextField(10);
         clientField = new JTextField(10);
         vendreButton = new JButton("Vendre");
 
-        // Set a preferred size for the text fields
         quantiteField.setPreferredSize(new Dimension(200, 30));
         clientField.setPreferredSize(new Dimension(200, 30));
 
-        // Ajout des écouteurs d'événements
         vendreButton.addActionListener(this);
 
-        // Création du formulaire avec une bordure et style
         JPanel formPanel = new JPanel(new GridBagLayout());
-        Border border = BorderFactory.createLineBorder(new Color(0, 102, 204), 2); // Border color
+        Border border = BorderFactory.createLineBorder(new Color(0, 102, 204), 2);
         formPanel.setBorder(BorderFactory.createTitledBorder(border, "Vente d'Article",
-                TitledBorder.CENTER, TitledBorder.TOP, new Font("Segoe UI", Font.BOLD, 24), Color.BLACK));
+                TitledBorder.CENTER, TitledBorder.TOP, new Font("Courier", Font.BOLD, 24), Color.BLACK));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        // Add components to the formPanel with GridBagConstraints
         gbc.gridx = 0;
         gbc.gridy = 1;
         formPanel.add(new JLabel("Quantité :"), gbc);
@@ -88,10 +82,9 @@ public class VendreArticle extends JFrame implements ActionListener {
         gbc.gridy = 3;
         formPanel.add(vendreButton, gbc);
 
-        // Make elements fit the screen
-        Font labelFont = new Font("Segoe UI", Font.PLAIN, 20); // Change font
-        Font fieldFont = new Font("Segoe UI", Font.PLAIN, 20);
-        Font buttonFont = new Font("Segoe UI", Font.PLAIN, 20);
+        Font labelFont = new Font("Courier", Font.PLAIN, 20);
+        Font fieldFont = new Font("Courier", Font.PLAIN, 20);
+        Font buttonFont = new Font("Courier", Font.PLAIN, 20);
 
         for (Component component : formPanel.getComponents()) {
             if (component instanceof JLabel) {
@@ -103,10 +96,7 @@ public class VendreArticle extends JFrame implements ActionListener {
             }
         }
 
-        // Ajout du formulaire à la fenêtre
         this.add(formPanel);
-
-        // Définition des propriétés de la fenêtre
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -158,8 +148,6 @@ public class VendreArticle extends JFrame implements ActionListener {
             Connection connection = databaseConnection.getConnection();
 
             if (estDisponible(quantiteVendue)) {
-
-                // Insertion des données dans la table ArticleVendu
                 String insertQuery = "INSERT INTO ArticleVendu (libel, prix, dateDeVente, designationCat, quantiteVendu, prixTotal, client) VALUES (?, ?, ?, ?, ?, ?, ?)";
                 try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
                     preparedStatement.setString(1, getLibelle(idArticle));
@@ -173,7 +161,6 @@ public class VendreArticle extends JFrame implements ActionListener {
                     preparedStatement.executeUpdate();
                 }
 
-                // Mise à jour de la quantité en stock dans la table Article
                 String updateQuery = "UPDATE Article SET quantiteEnStock = quantiteEnStock - ? WHERE idArticle = ?";
                 try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
                     preparedStatement.setInt(1, quantiteVendue);
@@ -182,16 +169,20 @@ public class VendreArticle extends JFrame implements ActionListener {
                     preparedStatement.executeUpdate();
                 }
 
-                // Génération du reçu PDF
                 generateReceipt(idArticle, getLibelle(idArticle), getDesignationCategorie(idArticle), quantiteVendue,
                         prixTotal);
 
-                // Affichage d'un message de succès
                 JOptionPane.showMessageDialog(this, "L'article a été vendu avec succès. Le reçu a été généré.",
                         "Vente réussie", JOptionPane.INFORMATION_MESSAGE);
+                try {
+
+                    // Open the generated PDF in the default PDF viewer
+                    Desktop.getDesktop().open(new File("pdf/receipt_" + idArticle + ".pdf"));
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(this, "Erreur lors de l'ouverture du PDF");
+                }
 
                 new ListeArticles();
-                // Fermeture de la fenêtre après la vente
                 this.dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "La quantité en stock n'est pas suffisante");
@@ -207,24 +198,29 @@ public class VendreArticle extends JFrame implements ActionListener {
     private void generateReceipt(int idArticle, String libelle, String designationCat, int quantiteVendue,
             double prixTotal) {
         try {
-            // Création d'un nouveau Document
             Document document = new Document();
-            // Spécification du chemin où vous souhaitez enregistrer le reçu PDF
-            String pdfPath = "pdf/receipt_" + (Math.round(Math.random()) * 1000) + ".pdf";
+            String pdfPath = "pdf/receipt_" + idArticle + ".pdf";
             PdfWriter.getInstance(document, new FileOutputStream(pdfPath));
-
-            // Ouverture du document
             document.open();
 
-            // Ajout du contenu au document (vous pouvez personnaliser cela en fonction de
-            // vos besoins)
+            // Add company information at the top
+            Paragraph companyInfo = new Paragraph("Fadtech\nTel: 70 66 12 26");
+            companyInfo.setAlignment(Paragraph.ALIGN_LEFT);
+            companyInfo.setFont(new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.COURIER, 15,
+                    com.itextpdf.text.Font.NORMAL));
+            document.add(companyInfo);
+
+            // Add a line to separate company information from the receipt
+            document.add(Chunk.NEWLINE);
+
+            // Add the main title
             Paragraph title = new Paragraph("Reçu pour la vente d'article");
             title.setAlignment(Paragraph.ALIGN_CENTER);
-            title.setFont(new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.COURIER, 40,
+            title.setFont(new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.COURIER, 28,
                     com.itextpdf.text.Font.BOLD));
             document.add(title);
 
-            document.add(Chunk.NEWLINE); // Espacement
+            document.add(Chunk.NEWLINE);
             document.add(createReceiptLine("Client", String.valueOf(clientField.getText())));
             document.add(createInterLine());
             document.add(createReceiptLine("ID de l'article", String.valueOf(idArticle)));
@@ -237,10 +233,22 @@ public class VendreArticle extends JFrame implements ActionListener {
             document.add(createReceiptLine("Quantité vendue", String.valueOf(quantiteVendue)));
             document.add(createInterLine());
 
-            document.add(createReceiptLine("Prix total", "$" + prixTotal));
+            document.add(createReceiptLine("Prix unitaire", "$" + getPrixUnitaire(idArticle)));
+            document.add(createInterLine());
 
-            // Fermeture du document
+            document.add(createReceiptLine("Prix total", "$" + prixTotal));
+            document.add(createInterLine());
+
+            document.add(createReceiptLine("Date de vente", getCurrentDate().toString()));
+            document.add(createInterLine());
+
+            document.add(createReceiptLine("Merci pour votre achat!", ""));
+            document.add(createInterLine());
+
             document.close();
+
+            // Open the generated PDF in the default PDF viewer
+            Desktop.getDesktop().open(new File(pdfPath));
 
             JOptionPane.showMessageDialog(this, "Le reçu a été généré avec succès.", "Reçu généré",
                     JOptionPane.INFORMATION_MESSAGE);
@@ -254,17 +262,17 @@ public class VendreArticle extends JFrame implements ActionListener {
 
     private Paragraph createInterLine() {
         Paragraph line = new Paragraph();
-        line.add(new Chunk("----------------------------------------------------------",
-                new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.COURIER, 12,
+        line.add(new Chunk("\n-------------------------------------------------------\n",
+                new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.COURIER, 14,
                         com.itextpdf.text.Font.BOLD)));
         return line;
     }
 
     private Paragraph createReceiptLine(String label, String value) {
         Paragraph line = new Paragraph();
-        line.add(new Chunk(label + ": ", new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.COURIER, 12,
+        line.add(new Chunk(label + ": ", new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.COURIER, 14,
                 com.itextpdf.text.Font.BOLD)));
-        line.add(new Chunk(value, new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.COURIER, 12)));
+        line.add(new Chunk(value, new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.COURIER, 14)));
         return line;
     }
 
@@ -328,6 +336,6 @@ public class VendreArticle extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new VendreArticle(2);
+        new VendreArticle(33);
     }
 }
