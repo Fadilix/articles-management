@@ -36,7 +36,6 @@ VALUES
     ("Lampe de bureau LED", 24.99, 30, "2023-08-05", 5, "Maison et bureau");
     -- Continuez d"ajouter d"autres lignes avec des valeurs réalistes ici
 
-
 INSERT INTO categorie (designation) VALUES
     ('Alimentation'),
     ('Vêtements'),
