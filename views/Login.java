@@ -27,9 +27,15 @@ public class Login extends JFrame implements ActionListener {
 
     public Login() {
         setTitle("User Login");
-        setSize(1920, 1080);
+        setSize(this.getWidth(), this.getHeight());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+        // Set the size of the frame to the screen size
+        setSize(screenSize.width, screenSize.height);
+
+        // Maximize the frame
+        // setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         // Adding the top navbar
         NavBarAuth navBarAuth = new NavBarAuth(this);

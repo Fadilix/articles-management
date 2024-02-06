@@ -54,7 +54,7 @@ public class ListeArticles extends JFrame implements ActionListener {
         // Frame settings
         this.setTitle("Liste des Articles en Stock");
         this.setSize(1920, 1080);
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
 
         // Navbar
         TopNavBar topNavBar = new TopNavBar(this);
