@@ -5,7 +5,6 @@ import database.DatabaseConnection;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,7 +27,7 @@ public class Register extends JFrame implements ActionListener {
         // Adding the top navbar
         NavBarAuth navBarAuth = new NavBarAuth(this);
         this.setJMenuBar(navBarAuth);
-        
+
         // Styling
         Font labelFont = new Font("Manrope", Font.PLAIN, 24);
         Font titleFont = new Font("Manrope", Font.BOLD, 28);
@@ -59,7 +58,7 @@ public class Register extends JFrame implements ActionListener {
         confirmPasswordField = new JPasswordField(20);
         confirmPasswordField.setFont(inputFont);
         confirmPasswordField.setBorder(BorderFactory.createLineBorder(new Color(0, 102, 204), 1, true)); // Subtle
-                                                                                                         // Border
+        // Border
         confirmPasswordField.setBackground(new Color(255, 255, 255)); // White Background
 
         registerButton = new JButton("Enregistrer");
@@ -102,6 +101,8 @@ public class Register extends JFrame implements ActionListener {
 
         add(formPanel);
 
+        registerButton.addActionListener(this); // Registering the ActionListener
+
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
@@ -110,7 +111,9 @@ public class Register extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == registerButton) {
+            System.out.println("It is working");
             registerUser();
+            new Login();
         }
     }
 
@@ -134,6 +137,8 @@ public class Register extends JFrame implements ActionListener {
         }
 
         try (Connection connection = new DatabaseConnection().getConnection()) {
+            connection.setAutoCommit(false); // Disable auto-commit
+
             String insertQuery = "INSERT INTO user (username, password) VALUES (?, ?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
                 preparedStatement.setString(1, username);
@@ -144,6 +149,7 @@ public class Register extends JFrame implements ActionListener {
                 if (rowsAffected > 0) {
                     JOptionPane.showMessageDialog(this, "Vous êtes enregistré avec succès", "Success",
                             JOptionPane.INFORMATION_MESSAGE);
+                    connection.commit(); // Permet l'insertion dans la base de donénes
                     dispose();
                 } else {
                     JOptionPane.showMessageDialog(this, "Erreur lors de la création du compte", "Error",
@@ -152,7 +158,7 @@ public class Register extends JFrame implements ActionListener {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Erreur de connexion à la base de données", "Error",
+            JOptionPane.showMessageDialog(this, "Erreur de connexion à la base de données: " + ex.getMessage(), "Error",
                     JOptionPane.ERROR_MESSAGE);
         }
     }

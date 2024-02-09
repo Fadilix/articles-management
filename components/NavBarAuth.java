@@ -38,7 +38,7 @@ public class NavBarAuth extends JMenuBar {
         this.setBackground(new Color(36, 41, 46)); // A dark bluish-gray
 
         JMenu menuAuth = new JMenu("Authentification");
-        JMenuItem login = new JMenuItem("Login");
+        JMenuItem login = new JMenuItem("Connexion");
         JMenuItem inscription = new JMenuItem("Inscription");
         // JMenuItem deconnection = new JMenuItem("Deconnection");
 

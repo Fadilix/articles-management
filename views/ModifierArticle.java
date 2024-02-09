@@ -1,5 +1,10 @@
 package views;
 
+import components.TopNavBar;
+import database.DatabaseConnection;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,18 +12,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-
-import components.TopNavBar;
-import database.DatabaseConnection;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ModifierArticle extends JFrame implements ActionListener {
 
     private JLabel label;
     private JButton boutonValider;
-    private JTextField libel, prix, quantiteStock, quantiteSeuil, designationCat;
+    private JTextField libel, prix, quantiteStock, quantiteSeuil;
+    private JComboBox<String> designationCat;
 
     private final int idArticle;
 
@@ -35,12 +37,19 @@ public class ModifierArticle extends JFrame implements ActionListener {
         prix = new JTextField(20);
         quantiteStock = new JTextField(20);
         quantiteSeuil = new JTextField(20);
-        designationCat = new JTextField(20);
+        designationCat = new JComboBox<>(getCategories());
         boutonValider = new JButton("Valider");
 
         // Remplir les champs avec les valeurs de la base de données
         remplirChamps();
 
+        JPanel panel = createPanel();
+        this.add(panel);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setVisible(true);
+    }
+
+    private JPanel createPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBorder(new EmptyBorder(20, 20, 20, 20)); // Ajouter une marge au panneau
         GridBagConstraints gbc = new GridBagConstraints();
@@ -54,50 +63,20 @@ public class ModifierArticle extends JFrame implements ActionListener {
 
         gbc.gridx = 0;
         gbc.gridy++;
-        JLabel libelleLabel = new JLabel("Libellé :");
-        libelleLabel.setFont(new Font("Manrope", Font.PLAIN, 16));
-        panel.add(libelleLabel, gbc);
-        gbc.gridx++;
-        libel.setFont(new Font("Manrope", Font.PLAIN, 16));
-        panel.add(libel, gbc);
+        addLabelAndTextField(panel, "Libellé :", libel, gbc);
 
-        gbc.gridx = 0;
         gbc.gridy++;
-        JLabel prixLabel = new JLabel("Prix :");
-        prixLabel.setFont(new Font("Manrope", Font.PLAIN, 16));
-        panel.add(prixLabel, gbc);
-        gbc.gridx++;
-        prix.setFont(new Font("Manrope", Font.PLAIN, 16));
-        panel.add(prix, gbc);
+        addLabelAndTextField(panel, "Prix :", prix, gbc);
 
-        gbc.gridx = 0;
         gbc.gridy++;
-        JLabel quantiteStockLabel = new JLabel("Quantité en stock :");
-        quantiteStockLabel.setFont(new Font("Manrope", Font.PLAIN, 16));
-        panel.add(quantiteStockLabel, gbc);
-        gbc.gridx++;
-        quantiteStock.setFont(new Font("Manrope", Font.PLAIN, 16));
-        panel.add(quantiteStock, gbc);
+        addLabelAndTextField(panel, "Quantité en stock :", quantiteStock, gbc);
 
-        gbc.gridx = 0;
         gbc.gridy++;
-        JLabel quantiteSeuilLabel = new JLabel("Quantité seuil :");
-        quantiteSeuilLabel.setFont(new Font("Manrope", Font.PLAIN, 16));
-        panel.add(quantiteSeuilLabel, gbc);
-        gbc.gridx++;
-        quantiteSeuil.setFont(new Font("Manrope", Font.PLAIN, 16));
-        panel.add(quantiteSeuil, gbc);
+        addLabelAndTextField(panel, "Quantité seuil :", quantiteSeuil, gbc);
 
-        gbc.gridx = 0;
         gbc.gridy++;
-        JLabel designationCatLabel = new JLabel("Désignation Catégorie :");
-        designationCatLabel.setFont(new Font("Manrope", Font.PLAIN, 16));
-        panel.add(designationCatLabel, gbc);
-        gbc.gridx++;
-        designationCat.setFont(new Font("Manrope", Font.PLAIN, 16));
-        panel.add(designationCat, gbc);
+        addLabelAndComboBox(panel, "Désignation Catégorie :", designationCat, gbc);
 
-        gbc.gridx = 0;
         gbc.gridy++;
         gbc.gridwidth = 2;
         boutonValider.setFont(new Font("Manrope", Font.PLAIN, 16));
@@ -105,31 +84,94 @@ public class ModifierArticle extends JFrame implements ActionListener {
 
         boutonValider.addActionListener(this);
 
-        this.add(panel);
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.setVisible(true);
+        return panel;
+    }
+
+    private void addLabelAndTextField(JPanel panel, String labelText, JTextField textField, GridBagConstraints gbc) {
+        JLabel label = new JLabel(labelText);
+        label.setFont(new Font("Manrope", Font.PLAIN, 16));
+        panel.add(label, gbc);
+
+        gbc.gridx++;
+        textField.setFont(new Font("Manrope", Font.PLAIN, 16));
+        panel.add(textField, gbc);
+
+        gbc.gridx = 0;
+    }
+
+    private void addLabelAndComboBox(JPanel panel, String labelText, JComboBox<String> comboBox, GridBagConstraints gbc) {
+        JLabel label = new JLabel(labelText);
+        label.setFont(new Font("Manrope", Font.PLAIN, 16));
+        panel.add(label, gbc);
+
+        gbc.gridx++;
+        comboBox.setFont(new Font("Manrope", Font.PLAIN, 16));
+        panel.add(comboBox, gbc);
+
+        gbc.gridx = 0;
+    }
+
+    private void addNewCategory() {
+        String newCategory = JOptionPane.showInputDialog(this, "Entrez le nouveau nom de la catégorie :");
+        if (newCategory != null && !newCategory.trim().isEmpty()) {
+            try {
+                Connection connection = new DatabaseConnection().getConnection();
+                String insertCategorySql = "INSERT INTO categorie (designation) VALUES (?)";
+                try (PreparedStatement preparedStatement = connection.prepareStatement(insertCategorySql)) {
+                    preparedStatement.setString(1, newCategory);
+                    preparedStatement.executeUpdate();
+                }
+
+                refreshCategoryDropdown();
+            } catch (SQLException ex) {
+                handleSQLException("Erreur lors de l'ajout de la nouvelle catégorie.", ex);
+            }
+        }
+    }
+
+    private void refreshCategoryDropdown() {
+        String[] categories = getCategories();
+        designationCat.setModel(new DefaultComboBoxModel<>(categories));
+    }
+
+    private String[] getCategories() {
+        try {
+            Connection connection = new DatabaseConnection().getConnection();
+            String sql = "SELECT designation FROM categorie";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                 ResultSet resultSet = preparedStatement.executeQuery()) {
+
+                List<String> categories = new ArrayList<>();
+                while (resultSet.next()) {
+                    categories.add(resultSet.getString("designation"));
+                }
+
+                return categories.toArray(new String[0]);
+            }
+        } catch (SQLException e) {
+            handleSQLException("Erreur lors de la récupération des catégories.", e);
+            return new String[0];
+        }
     }
 
     private void remplirChamps() {
         try {
-            DatabaseConnection databaseConnection = new DatabaseConnection();
-            Connection connection = databaseConnection.getConnection();
-
+            Connection connection = new DatabaseConnection().getConnection();
             String query = "SELECT libel, prix, quantiteEnStock, quantiteSeuil, designationCat FROM article WHERE idArticle = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, idArticle);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, idArticle);
+                ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) {
-                libel.setText(resultSet.getString("libel"));
-                prix.setText(String.valueOf(resultSet.getDouble("prix")));
-                quantiteStock.setText(String.valueOf(resultSet.getInt("quantiteEnStock")));
-                quantiteSeuil.setText(String.valueOf(resultSet.getInt("quantiteSeuil")));
-                designationCat.setText(resultSet.getString("designationCat"));
+                if (resultSet.next()) {
+                    libel.setText(resultSet.getString("libel"));
+                    prix.setText(String.valueOf(resultSet.getDouble("prix")));
+                    quantiteStock.setText(String.valueOf(resultSet.getInt("quantiteEnStock")));
+                    quantiteSeuil.setText(String.valueOf(resultSet.getInt("quantiteSeuil")));
+                    designationCat.setSelectedItem(resultSet.getString("designationCat"));
+                }
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            handleSQLException("Erreur lors de la récupération des données de l'article.", e);
         }
     }
 
@@ -138,52 +180,49 @@ public class ModifierArticle extends JFrame implements ActionListener {
         if (e.getSource() == boutonValider) {
             if (validateInput()) {
                 try {
-                    DatabaseConnection databaseConnection = new DatabaseConnection();
-                    Connection connection = databaseConnection.getConnection();
+                    Connection connection = new DatabaseConnection().getConnection();
                     String sql = "UPDATE article SET libel = ?, prix = ?, quantiteEnStock = ?, quantiteSeuil = ?, designationCat = ? WHERE idArticle = ?";
-                    PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                    try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                        preparedStatement.setString(1, libel.getText());
+                        preparedStatement.setDouble(2, Double.parseDouble(prix.getText()));
+                        preparedStatement.setInt(3, Integer.parseInt(quantiteStock.getText()));
+                        preparedStatement.setInt(4, Integer.parseInt(quantiteSeuil.getText()));
+                        preparedStatement.setString(5, (String) designationCat.getSelectedItem());
+                        preparedStatement.setInt(6, idArticle);
 
-                    preparedStatement.setString(1, libel.getText());
-                    preparedStatement.setDouble(2, Double.parseDouble(prix.getText()));
-                    preparedStatement.setInt(3, Integer.parseInt(quantiteStock.getText()));
-                    preparedStatement.setInt(4, Integer.parseInt(quantiteSeuil.getText()));
-                    preparedStatement.setString(5, designationCat.getText());
-                    preparedStatement.setInt(6, idArticle);
+                        int rowsAffected = preparedStatement.executeUpdate();
 
-                    int rowsAffected = preparedStatement.executeUpdate();
+                        if (rowsAffected > 0) {
+                            System.out.println("Mise à jour réussie !");
+                            JOptionPane.showMessageDialog(this, "Mise à jour réussie !");
+                        } else {
+                            System.out.println("La mise à jour a échoué.");
+                        }
 
-                    if (rowsAffected > 0) {
-                        System.out.println("Mise à jour réussie !");
-                        JOptionPane.showMessageDialog(this, "Mise à jour réussie !");
-                    } else {
-                        System.out.println("La mise à jour a échoué.");
+                        new ListeArticles();
+                        this.dispose();
                     }
-                    new ListeArticles();
-                    this.dispose();
-
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    handleSQLException("Erreur lors de la mise à jour de l'article.", ex);
                 }
             }
         }
     }
 
     private boolean validateInput() {
-        // Valider les champs de saisie
-        if (!isDouble(prix.getText()) || !isInteger(quantiteStock.getText()) || !isInteger(quantiteSeuil.getText())) {
+        try {
+            double parsedPrix = Double.parseDouble(prix.getText());
+            int parsedQuantiteStock = Integer.parseInt(quantiteStock.getText());
+            int parsedQuantiteSeuil = Integer.parseInt(quantiteSeuil.getText());
+
+            if (parsedPrix < 1 || parsedQuantiteStock < 1 || parsedQuantiteSeuil < 1) {
+                JOptionPane.showMessageDialog(this, "Le prix et la quantité en stock doivent être supérieurs ou égaux à 1.",
+                        "Erreur de saisie", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this,
                     "Veuillez saisir des valeurs valides pour le prix, la quantité en stock et la quantité seuil.",
-                    "Erreur de saisie", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-
-        // Valider que le prix et la quantité ne sont pas inférieurs à 1
-        double prixValue = Double.parseDouble(prix.getText());
-        int quantiteStockValue = Integer.parseInt(quantiteStock.getText());
-        int quantiteSeuilValue = Integer.parseInt(quantiteSeuil.getText());
-
-        if (prixValue < 1 || quantiteStockValue < 1 || quantiteSeuilValue < 1) {
-            JOptionPane.showMessageDialog(this, "Le prix et la quantité en stock doivent être supérieurs ou égaux à 1.",
                     "Erreur de saisie", JOptionPane.ERROR_MESSAGE);
             return false;
         }
@@ -193,22 +232,9 @@ public class ModifierArticle extends JFrame implements ActionListener {
         return true;
     }
 
-    private boolean isDouble(String str) {
-        try {
-            Double.parseDouble(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
-    private boolean isInteger(String str) {
-        try {
-            Integer.parseInt(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
+    private void handleSQLException(String message, SQLException ex) {
+        ex.printStackTrace();
+        JOptionPane.showMessageDialog(this, message + "\nErreur SQL: " + ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
     }
 
     public static void main(String[] args) {
