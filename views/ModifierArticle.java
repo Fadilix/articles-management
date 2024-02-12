@@ -99,7 +99,8 @@ public class ModifierArticle extends JFrame implements ActionListener {
         gbc.gridx = 0;
     }
 
-    private void addLabelAndComboBox(JPanel panel, String labelText, JComboBox<String> comboBox, GridBagConstraints gbc) {
+    private void addLabelAndComboBox(JPanel panel, String labelText, JComboBox<String> comboBox,
+            GridBagConstraints gbc) {
         JLabel label = new JLabel(labelText);
         label.setFont(new Font("Manrope", Font.PLAIN, 16));
         panel.add(label, gbc);
@@ -139,7 +140,7 @@ public class ModifierArticle extends JFrame implements ActionListener {
             Connection connection = new DatabaseConnection().getConnection();
             String sql = "SELECT designation FROM categorie";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql);
-                 ResultSet resultSet = preparedStatement.executeQuery()) {
+                    ResultSet resultSet = preparedStatement.executeQuery()) {
 
                 List<String> categories = new ArrayList<>();
                 while (resultSet.next()) {
@@ -216,7 +217,8 @@ public class ModifierArticle extends JFrame implements ActionListener {
             int parsedQuantiteSeuil = Integer.parseInt(quantiteSeuil.getText());
 
             if (parsedPrix < 1 || parsedQuantiteStock < 1 || parsedQuantiteSeuil < 1) {
-                JOptionPane.showMessageDialog(this, "Le prix et la quantité en stock doivent être supérieurs ou égaux à 1.",
+                JOptionPane.showMessageDialog(this,
+                        "Le prix et la quantité en stock doivent être supérieurs ou égaux à 1.",
                         "Erreur de saisie", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
@@ -227,18 +229,17 @@ public class ModifierArticle extends JFrame implements ActionListener {
             return false;
         }
 
-        // Logique de validation supplémentaire peut être ajoutée ici...
-
         return true;
     }
 
     private void handleSQLException(String message, SQLException ex) {
         ex.printStackTrace();
-        JOptionPane.showMessageDialog(this, message + "\nErreur SQL: " + ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, message + "\nErreur SQL: " + ex.getMessage(), "Erreur",
+                JOptionPane.ERROR_MESSAGE);
     }
 
     public static void main(String[] args) {
-        // Exemple d'utilisation
+        // Exemple
         new ModifierArticle(1);
     }
 }
