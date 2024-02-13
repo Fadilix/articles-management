@@ -1,9 +1,13 @@
 package views;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
+
+import components.NavBarAuth;
+import database.DatabaseConnection;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,10 +18,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import components.NavBarAuth;
-import database.DatabaseConnection;
 
 public class Login extends JFrame implements ActionListener {
 
@@ -26,16 +26,10 @@ public class Login extends JFrame implements ActionListener {
     private JButton loginButton;
 
     public Login() {
-        setTitle("User Login");
-        setSize(this.getWidth(), this.getHeight());
+        setTitle("Connexion Utilisateur");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
-        // Set the size of the frame to the screen size
-        setSize(screenSize.width, screenSize.height);
-
-        // Maximize the frame
-        // setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setSize(screenSize.width / 2, screenSize.height / 2);
 
         // Adding the top navbar
         NavBarAuth navBarAuth = new NavBarAuth(this);
@@ -58,65 +52,68 @@ public class Login extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(this, "Error loading font.", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-        // Styling
-        Font labelFont = new Font("Manrope", Font.PLAIN, 24);
-        Font titleFont = new Font("Manrope", Font.BOLD, 28);
-        Font inputFont = new Font("Manrope", Font.PLAIN, 20);
-        UIManager.put("OptionPane.messageFont", new Font("Manrope", Font.PLAIN, 20));
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        // Form Panel with Border and Background Color
-        JPanel formPanel = new JPanel();
-        formPanel.setLayout(new GridBagLayout());
+        JPanel formPanel = new JPanel(new GridBagLayout());
         formPanel.setBackground(new Color(240, 240, 240)); // Light Gray Background
         formPanel.setBorder(BorderFactory.createTitledBorder(new LineBorder(new Color(0, 102, 204), 2, true),
-                "Connection", TitledBorder.CENTER, TitledBorder.TOP, titleFont, new Color(0, 102, 204)));
+                "Connexion", TitledBorder.CENTER, TitledBorder.TOP, new Font("Manrope", Font.BOLD, 28), new Color(0, 102, 204)));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(15, 15, 15, 15);
 
         usernameField = new JTextField(20);
-        usernameField.setFont(inputFont);
+        usernameField.setFont(new Font("Manrope", Font.PLAIN, 20));
         usernameField.setBorder(BorderFactory.createLineBorder(new Color(0, 102, 204), 1, true)); // Subtle Border
         usernameField.setBackground(new Color(255, 255, 255)); // White Background
 
         passwordField = new JPasswordField(20);
-        passwordField.setFont(inputFont);
+        passwordField.setFont(new Font("Manrope", Font.PLAIN, 20));
         passwordField.setBorder(BorderFactory.createLineBorder(new Color(0, 102, 204), 1, true)); // Subtle Border
         passwordField.setBackground(new Color(255, 255, 255)); // White Background
 
-        loginButton = new JButton("Login");
-        loginButton.setFont(inputFont);
+        loginButton = new JButton("Connexion");
+        loginButton.setFont(new Font("Manrope", Font.BOLD, 20));
         loginButton.setForeground(Color.WHITE);
         loginButton.setBackground(new Color(0, 102, 204));
         loginButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // Padding
         loginButton.addActionListener(this);
 
         JLabel usernameLabel = new JLabel("Nom d'utilisateur:");
-        usernameLabel.setFont(labelFont);
+        usernameLabel.setFont(new Font("Manrope", Font.PLAIN, 24));
         gbc.gridx = 0;
         gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.FIRST_LINE_START;  // Align to the top
         formPanel.add(usernameLabel, gbc);
 
         gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.FIRST_LINE_START;  // Align to the top
         formPanel.add(usernameField, gbc);
 
         JLabel passwordLabel = new JLabel("Mot de passe:");
-        passwordLabel.setFont(labelFont);
+        passwordLabel.setFont(new Font("Manrope", Font.PLAIN, 24));
         gbc.gridx = 0;
         gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.FIRST_LINE_START;  // Align to the top
         formPanel.add(passwordLabel, gbc);
 
         gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.FIRST_LINE_START;  // Align to the top
         formPanel.add(passwordField, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;  // Centered alignment for the button
         formPanel.add(loginButton, gbc);
 
-        add(formPanel);
+        mainPanel.add(formPanel, BorderLayout.CENTER);
 
-        pack();
+        add(mainPanel);
+
         setLocationRelativeTo(null);
         setVisible(true);
     }
@@ -148,20 +145,20 @@ public class Login extends JFrame implements ActionListener {
                 ResultSet resultSet = preparedStatement.executeQuery();
 
                 if (resultSet.next()) {
-                    JOptionPane.showMessageDialog(this, "Connexion réussie", "Welcome",
+                    JOptionPane.showMessageDialog(this, "Connexion réussie", "Bienvenue",
                             JOptionPane.INFORMATION_MESSAGE);
                     dispose();
-
                     new WelcomePage(username);
                 } else {
-                    JOptionPane.showMessageDialog(this, "Nom d'utiliasteur ou mot de passe erroné", "Error",
+                    JOptionPane.showMessageDialog(this, "Nom d'utilisateur ou mot de passe incorrect", "Erreur",
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
 
-        } catch (Exception ex ) {
+        } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error accessing the database.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Erreur d'accès à la base de données.", "Erreur",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 

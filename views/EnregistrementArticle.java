@@ -218,6 +218,7 @@ public class EnregistrementArticle extends JFrame {
                     preparedStatement.setInt(5, Integer.parseInt(quantiteSeuil.getText()));
                     preparedStatement.setString(6, categorieDropdown.getSelectedItem().toString());
 
+
                     int rowsInserted = preparedStatement.executeUpdate();
                     new PageSucces();
 

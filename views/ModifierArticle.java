@@ -162,7 +162,7 @@ public class ModifierArticle extends JFrame implements ActionListener {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, idArticle);
                 ResultSet resultSet = preparedStatement.executeQuery();
-
+                
                 if (resultSet.next()) {
                     libel.setText(resultSet.getString("libel"));
                     prix.setText(String.valueOf(resultSet.getDouble("prix")));

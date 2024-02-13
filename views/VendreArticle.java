@@ -175,6 +175,7 @@ public class VendreArticle extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(this, "L'article a été vendu avec succès. Le reçu a été généré.",
                         "Vente réussie", JOptionPane.INFORMATION_MESSAGE);
                 try {
+                    // kenza
 
                     // Open the generated PDF in the default PDF viewer
                     Desktop.getDesktop().open(new File("pdf/receipt_" + idArticle + ".pdf"));
@@ -195,6 +196,7 @@ public class VendreArticle extends JFrame implements ActionListener {
         }
     }
 
+    
     private void generateReceipt(int idArticle, String libelle, String designationCat, int quantiteVendue,
             double prixTotal) {
         try {
@@ -204,7 +206,7 @@ public class VendreArticle extends JFrame implements ActionListener {
             document.open();
 
             // Add company information at the top
-            Paragraph companyInfo = new Paragraph("Fadtech\nTel: 70 66 12 26");
+            Paragraph companyInfo = new Paragraph("FaRoZa\nTel: 70 66 12 26");
             companyInfo.setAlignment(Paragraph.ALIGN_LEFT);
             companyInfo.setFont(new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.COURIER, 15,
                     com.itextpdf.text.Font.NORMAL));
@@ -214,7 +216,7 @@ public class VendreArticle extends JFrame implements ActionListener {
             document.add(Chunk.NEWLINE);
 
             // Add the main title
-            Paragraph title = new Paragraph("Reçu pour la vente d'article");
+            Paragraph title = new Paragraph("Reçu de vente");
             title.setAlignment(Paragraph.ALIGN_CENTER);
             title.setFont(new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.COURIER, 28,
                     com.itextpdf.text.Font.BOLD));
