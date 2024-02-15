@@ -1,10 +1,8 @@
 package views;
 
 import javax.swing.*;
-
 import components.TopNavBar;
 import database.DatabaseConnection;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,7 +23,7 @@ public class ApprovisionnerArticle extends JFrame implements ActionListener {
 
         // Paramètres de l'écran
         this.setTitle("Approvisionner Article");
-        this.setSize(1920, 1080);
+        this.setSize(400, 200);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLayout(new BorderLayout());
         TopNavBar topNavBar = new TopNavBar(this);
@@ -80,8 +78,15 @@ public class ApprovisionnerArticle extends JFrame implements ActionListener {
         if (e.getSource() == approvisionnerButton) {
             try {
                 int quantiteApprovisionnee = Integer.parseInt(quantiteField.getText());
-                DatabaseConnection databseConnection = new DatabaseConnection();
-                Connection existingConnection = databseConnection.getConnection();
+
+                // Vérification si la quantité est positive
+                if (quantiteApprovisionnee < 0) {
+                    JOptionPane.showMessageDialog(this, "La quantité doit être positive.");
+                    return;
+                }
+
+                DatabaseConnection databaseConnection = new DatabaseConnection();
+                Connection existingConnection = databaseConnection.getConnection();
                 String updateQuery = "UPDATE article SET quantiteEnStock = quantiteEnStock + ? WHERE idArticle = ?";
                 try (PreparedStatement preparedStatement = existingConnection.prepareStatement(updateQuery)) {
                     preparedStatement.setInt(1, quantiteApprovisionnee);
