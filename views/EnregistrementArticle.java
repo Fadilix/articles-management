@@ -161,10 +161,15 @@ public class EnregistrementArticle extends JFrame {
         categorieDropdown.setModel(new DefaultComboBoxModel<>(categories));
     }
 
+
+
+
+    // Avoir la liste des categories
+
     private String[] getCategories() {
         try (Connection connection = new DatabaseConnection().getConnection()) {
             String sql = "SELECT designation FROM categorie";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            try (PreparedStatement preparedStatement=  connection.prepareStatement(sql);
                     ResultSet resultSet = preparedStatement.executeQuery()) {
 
                 List<String> categories = new ArrayList<>();

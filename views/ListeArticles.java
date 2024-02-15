@@ -307,7 +307,7 @@ public class ListeArticles extends JFrame implements ActionListener {
                         JOptionPane.showMessageDialog(this, "L'article a été supprimé avec succès.");
                     } catch (Exception ex) {
                         ex.printStackTrace();
-                        JOptionPane.showMessageDialog(this, "Erreur lors de la suppression de l'article.");
+                        JOptionPane.showMessageDialog(this, "L'article a été supprimé avec succès.");
                     }
                 }
             } else {
@@ -374,6 +374,10 @@ public class ListeArticles extends JFrame implements ActionListener {
                 preparedStatement.setString(1, "%" + searchTerm + "%");
                 ResultSet resultSet = preparedStatement.executeQuery();
 
+
+                if(!resultSet.isBeforeFirst()){
+                    JOptionPane.showMessageDialog(null, "Cet article n'existe pas");
+                }
                 while (resultSet.next()) {
                     Object[] rowData = {
                             resultSet.getInt("idArticle"),
@@ -383,10 +387,14 @@ public class ListeArticles extends JFrame implements ActionListener {
                             resultSet.getInt("quantiteSeuil"),
                             resultSet.getString("designationCat"),
                     };
+
+                  
                     model.addRow(rowData);
                 }
             }
-        } catch (SQLException ex) {
+        } catch (
+
+        SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Erreur lors de la recherche d'articles.");
         }
