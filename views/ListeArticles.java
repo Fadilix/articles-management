@@ -382,7 +382,6 @@ public class ListeArticles extends JFrame implements ActionListener {
                             resultSet.getInt("idArticle"),
                             resultSet.getString("libel"),
                             resultSet.getDouble("prix"),
-                            resultSet.getInt("quantiteEnStock"),
                             resultSet.getInt("quantiteSeuil"),
                             resultSet.getString("designationCat"),
                     };
