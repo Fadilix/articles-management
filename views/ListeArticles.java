@@ -374,8 +374,7 @@ public class ListeArticles extends JFrame implements ActionListener {
                 preparedStatement.setString(1, "%" + searchTerm + "%");
                 ResultSet resultSet = preparedStatement.executeQuery();
 
-
-                if(!resultSet.isBeforeFirst()){
+                if (!resultSet.isBeforeFirst()) {
                     JOptionPane.showMessageDialog(null, "Cet article n'existe pas");
                 }
                 while (resultSet.next()) {
@@ -388,7 +387,6 @@ public class ListeArticles extends JFrame implements ActionListener {
                             resultSet.getString("designationCat"),
                     };
 
-                  
                     model.addRow(rowData);
                 }
             }
