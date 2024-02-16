@@ -19,7 +19,7 @@ public class ModifierArticle extends JFrame implements ActionListener {
 
     private JLabel label;
     private JButton boutonValider;
-    private JTextField libel, prix, quantiteSeuil;
+    private JTextField libel, prix, quantiteStock, quantiteSeuil;
     private JComboBox<String> designationCat;
 
     private final int idArticle;
@@ -35,6 +35,8 @@ public class ModifierArticle extends JFrame implements ActionListener {
 
         libel = new JTextField(20);
         prix = new JTextField(20);
+        quantiteStock = new JTextField(20);
+        quantiteStock.setEnabled(false);
         quantiteSeuil = new JTextField(20);
         designationCat = new JComboBox<>(getCategories());
         boutonValider = new JButton("Valider");
@@ -66,6 +68,9 @@ public class ModifierArticle extends JFrame implements ActionListener {
 
         gbc.gridy++;
         addLabelAndTextField(panel, "Prix :", prix, gbc);
+
+        gbc.gridy++;
+        addLabelAndTextField(panel, "Quantité en stock :", quantiteStock, gbc);
 
         gbc.gridy++;
         addLabelAndTextField(panel, "Quantité seuil :", quantiteSeuil, gbc);
@@ -154,14 +159,15 @@ public class ModifierArticle extends JFrame implements ActionListener {
     private void remplirChamps() {
         try {
             Connection connection = new DatabaseConnection().getConnection();
-            String query = "SELECT libel, prix, quantiteSeuil, designationCat FROM article WHERE idArticle = ?";
+            String query = "SELECT libel, prix, quantiteEnStock, quantiteSeuil, designationCat FROM article WHERE idArticle = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, idArticle);
                 ResultSet resultSet = preparedStatement.executeQuery();
-
+                
                 if (resultSet.next()) {
                     libel.setText(resultSet.getString("libel"));
                     prix.setText(String.valueOf(resultSet.getDouble("prix")));
+                    quantiteStock.setText(String.valueOf(resultSet.getInt("quantiteEnStock")));
                     quantiteSeuil.setText(String.valueOf(resultSet.getInt("quantiteSeuil")));
                     designationCat.setSelectedItem(resultSet.getString("designationCat"));
                 }
@@ -177,13 +183,14 @@ public class ModifierArticle extends JFrame implements ActionListener {
             if (validateInput()) {
                 try {
                     Connection connection = new DatabaseConnection().getConnection();
-                    String sql = "UPDATE article SET libel = ?, prix = ?, quantiteSeuil = ?, designationCat = ? WHERE idArticle = ?";
+                    String sql = "UPDATE article SET libel = ?, prix = ?, quantiteEnStock = ?, quantiteSeuil = ?, designationCat = ? WHERE idArticle = ?";
                     try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                         preparedStatement.setString(1, libel.getText());
                         preparedStatement.setDouble(2, Double.parseDouble(prix.getText()));
-                        preparedStatement.setInt(3, Integer.parseInt(quantiteSeuil.getText()));
-                        preparedStatement.setString(4, (String) designationCat.getSelectedItem());
-                        preparedStatement.setInt(5, idArticle);
+                        preparedStatement.setInt(3, Integer.parseInt(quantiteStock.getText()));
+                        preparedStatement.setInt(4, Integer.parseInt(quantiteSeuil.getText()));
+                        preparedStatement.setString(5, (String) designationCat.getSelectedItem());
+                        preparedStatement.setInt(6, idArticle);
 
                         int rowsAffected = preparedStatement.executeUpdate();
 
@@ -207,9 +214,10 @@ public class ModifierArticle extends JFrame implements ActionListener {
     private boolean validateInput() {
         try {
             double parsedPrix = Double.parseDouble(prix.getText());
+            int parsedQuantiteStock = Integer.parseInt(quantiteStock.getText());
             int parsedQuantiteSeuil = Integer.parseInt(quantiteSeuil.getText());
 
-            if (parsedPrix < 1 || parsedQuantiteSeuil < 1) {
+            if (parsedPrix < 1 || parsedQuantiteStock < 1 || parsedQuantiteSeuil < 1) {
                 JOptionPane.showMessageDialog(this,
                         "Le prix et la quantité en stock doivent être supérieurs ou égaux à 1.",
                         "Erreur de saisie", JOptionPane.ERROR_MESSAGE);

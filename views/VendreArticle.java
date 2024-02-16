@@ -11,7 +11,6 @@ import database.DatabaseConnection;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,15 +29,15 @@ public class VendreArticle extends JFrame implements ActionListener {
     private JTextField quantiteField;
     private JTextField clientField;
     private JButton vendreButton;
+    private JButton annulerButton;
     private int idArticle;
 
     public VendreArticle(int idArticle) {
+        // Constructeur de la classe
         this.idArticle = idArticle;
 
         this.setTitle("Vente d'Article");
         this.setFont(new Font("Courier", Font.PLAIN, 24));
-
-        // Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setPreferredSize(new Dimension(800, 600));
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -48,11 +47,13 @@ public class VendreArticle extends JFrame implements ActionListener {
         quantiteField = new JTextField(10);
         clientField = new JTextField(10);
         vendreButton = new JButton("Vendre");
+        annulerButton = new JButton("Annuler");
 
         quantiteField.setPreferredSize(new Dimension(200, 30));
         clientField.setPreferredSize(new Dimension(200, 30));
 
         vendreButton.addActionListener(this);
+        annulerButton.addActionListener(this);
 
         JPanel formPanel = new JPanel(new GridBagLayout());
         Border border = BorderFactory.createLineBorder(new Color(0, 102, 204), 2);
@@ -82,6 +83,10 @@ public class VendreArticle extends JFrame implements ActionListener {
         gbc.gridy = 3;
         formPanel.add(vendreButton, gbc);
 
+        gbc.gridx = 2;
+        gbc.gridy = 3;
+        formPanel.add(annulerButton, gbc);
+
         Font labelFont = new Font("Courier", Font.PLAIN, 20);
         Font fieldFont = new Font("Courier", Font.PLAIN, 20);
         Font buttonFont = new Font("Courier", Font.PLAIN, 20);
@@ -93,7 +98,8 @@ public class VendreArticle extends JFrame implements ActionListener {
                 ((JTextField) component).setFont(fieldFont);
             } else if (component instanceof JButton) {
                 ((JButton) component).setFont(buttonFont);
-            }
+            }               
+
         }
 
         this.add(formPanel);
@@ -104,9 +110,22 @@ public class VendreArticle extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        // Méthode appelée lorsqu'un bouton est cliqué
         if (e.getSource() == vendreButton) {
             vendreArticle();
+        } else if (e.getSource() == annulerButton) {
+            annulerVente();
         }
+    }
+
+    private void annulerVente() {
+        // Méthode appelée lorsqu'on clique sur le bouton "Annuler"
+        // Ajouter ici la logique pour annuler la vente
+        // Par exemple, vous pouvez supprimer l'enregistrement de vente de la base de
+        // données
+        // et mettre à jour la quantité en stock en conséquence.
+        // Après l'annulation, vous voudrez peut-être fermer la fenêtre actuelle.
+        this.dispose();
     }
 
     public boolean estDisponible(int quantiteAvendre) {
@@ -191,12 +210,12 @@ public class VendreArticle extends JFrame implements ActionListener {
 
         } catch (NumberFormatException | SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Erreur lors de la vente de l'article.", "Erreur",
+            JOptionPane.showMessageDialog(this, "Veuillez entrer un nombre valide pour la quantité de l'article",
+                    "Erreur",
                     JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    
     private void generateReceipt(int idArticle, String libelle, String designationCat, int quantiteVendue,
             double prixTotal) {
         try {
