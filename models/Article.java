@@ -9,6 +9,16 @@ public class Article {
     private int quantiteSeuil;
     private Categorie categorie;
 
+    public Article(String libel, double prix, int quantiteEnStock, Date dateDeCrea, int quantiteSeuil,
+            Categorie categorie) {
+        this.libel = libel;
+        this.prix = prix;
+        this.quantiteEnStock = quantiteEnStock;
+        this.dateDeCrea = dateDeCrea;
+        this.quantiteSeuil = quantiteSeuil;
+        this.categorie = categorie;
+    }
+
     public int getIdArticle() {
         return idArticle;
     }

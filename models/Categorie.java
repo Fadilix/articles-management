@@ -6,6 +6,11 @@ public class Categorie {
         return idCat;
     }
 
+    public Categorie(int idCat, String designation) {
+        this.idCat = idCat;
+        this.designation = designation;
+    }
+
     public void setIdCat(int idCat) {
         this.idCat = idCat;
     }

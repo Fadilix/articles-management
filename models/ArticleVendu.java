@@ -6,6 +6,13 @@ public class ArticleVendu {
     private Date dateDeVente;
     private String designationCat;
 
+    public ArticleVendu(String libel, double prix, Date dateDeVente, String designationCat) {
+        this.libel = libel;
+        this.prix = prix;
+        this.dateDeVente = dateDeVente;
+        this.designationCat = designationCat;
+    }
+
     public String getLibel() {
         return libel;
     }

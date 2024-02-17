@@ -5,6 +5,16 @@ public class Approvisionnement {
     private Date date;
     private int quantiteAppro;
 
+    public Approvisionnement(String articleAppro, Date date, int quantiteAppro) {
+        this.articleAppro = articleAppro;
+        this.date = date;
+        this.quantiteAppro = quantiteAppro;
+    }
+
+    public Approvisionnement() {
+
+    }
+
     public String getArticleAppro() {
         return articleAppro;
     }
