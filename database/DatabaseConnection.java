@@ -21,6 +21,8 @@ public class DatabaseConnection {
         }
     }
 
+
+    // Tester la connexion
     public static void main(String[] args) {
         DatabaseConnection databaseConnection = new DatabaseConnection();
         try (Connection connection = databaseConnection.getConnection()) {
