@@ -387,7 +387,6 @@ public class ListeArticles extends JFrame implements ActionListener {
                             resultSet.getString("designationCat"),
                     };
 
-                  
                     model.addRow(rowData);
                 }
             }
