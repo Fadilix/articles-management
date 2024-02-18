@@ -374,7 +374,7 @@ public class ListeArticles extends JFrame implements ActionListener {
                 preparedStatement.setString(1, "%" + searchTerm + "%");
                 ResultSet resultSet = preparedStatement.executeQuery();
 
-                if(!resultSet.isBeforeFirst() && searchTerm != ""){
+                if (!resultSet.isBeforeFirst() && searchTerm != "") {
                     JOptionPane.showMessageDialog(null, "Cet article n'existe pas");
                 }
                 while (resultSet.next()) {
