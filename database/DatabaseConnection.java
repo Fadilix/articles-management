@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.swing.JOptionPane;
+
 public class DatabaseConnection {
 
     public Connection getConnection() {
@@ -21,7 +23,6 @@ public class DatabaseConnection {
         }
     }
 
-
     // Tester la connexion
     public static void main(String[] args) {
         DatabaseConnection databaseConnection = new DatabaseConnection();
@@ -34,6 +35,7 @@ public class DatabaseConnection {
             }
         } catch (Exception e) {
             System.out.println(e);
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }
 }
